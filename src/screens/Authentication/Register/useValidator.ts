@@ -2,7 +2,7 @@ interface IProps {
   name: string
   email: string
   password: string
-  setError({}): void
+  setError({}): void // eslint-disable-line
 }
 
 export default function useValidator({

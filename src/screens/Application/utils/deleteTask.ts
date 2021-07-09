@@ -1,4 +1,4 @@
-import firestore from '@react-native-firebase/firestore'
+import { firestore } from '../../../firebase/config'
 
 interface DeleteTaskProps {
   user?: string
@@ -11,10 +11,10 @@ export default async function deleteTask({
   task,
   load,
 }: DeleteTaskProps) {
-  const colRef = firestore().collection('Users').doc(user).collection('Tasks')
+  const colRef = firestore.collection('Users').doc(user).collection('Tasks')
   const tasks = await colRef.where('Name', '==', task).get()
 
-  tasks.forEach((t) => {
+  tasks.forEach(t => {
     colRef.doc(t.id).delete()
   })
 

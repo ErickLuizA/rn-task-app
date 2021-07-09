@@ -5,6 +5,30 @@ import { useTheme } from 'react-native-paper'
 
 const width = Dimensions.get('screen').width
 
+interface IButtonProps {
+  text: string
+  onPress(): void
+  big?: boolean
+}
+
+export default function Button({ text, onPress, big }: IButtonProps) {
+  const { colors } = useTheme()
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      testID={big ? `${text}BigButton` : text + 'Button'}
+      style={[
+        big ? styles.bigButton : styles.button,
+        { backgroundColor: colors.primary },
+      ]}>
+      <Text style={[styles.buttonText, { color: colors.secondary }]}>
+        {text}
+      </Text>
+    </TouchableOpacity>
+  )
+}
+
 const styles = StyleSheet.create({
   button: {
     paddingVertical: 20,
@@ -26,29 +50,3 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 })
-
-interface IButton {
-  text: string
-  onPress(): void
-  big?: boolean
-}
-
-const Button = ({ text, onPress, big }: IButton) => {
-  const { colors } = useTheme()
-
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      testID={big ? `${text}BigButton` : text + 'Button'}
-      style={[
-        big ? styles.bigButton : styles.button,
-        { backgroundColor: colors.primary },
-      ]}>
-      <Text style={[styles.buttonText, { color: colors.secondary }]}>
-        {text}
-      </Text>
-    </TouchableOpacity>
-  )
-}
-
-export default Button

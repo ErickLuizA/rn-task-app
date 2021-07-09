@@ -1,22 +1,22 @@
 import { Alert } from 'react-native'
-import Config from 'react-native-config'
-import auth from '@react-native-firebase/auth'
-import { GoogleSignin } from '@react-native-community/google-signin'
+import Google from 'expo-auth-session/providers/google'
+import { auth, firebase } from '../../../firebase/config'
 
-const handleGoogleLogin = async () => {
-  GoogleSignin.configure({
-    webClientId: Config.WEB_CLIENT_ID,
+export default async function handleGoogleLogin() {
+  const [_, response, __] = Google.useIdTokenAuthRequest({
+    clientId: process.env.WEB_CLIENT_ID,
   })
 
   try {
-    const { idToken } = await GoogleSignin.signIn()
+    if (response?.type == 'success') {
+      const { id_token } = response.params
 
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken)
+      const googleCredential =
+        firebase.auth.GoogleAuthProvider.credential(id_token)
 
-    await auth().signInWithCredential(googleCredential)
+      await auth.signInWithCredential(googleCredential)
+    }
   } catch (e) {
     Alert.alert(e.message)
   }
 }
-
-export default handleGoogleLogin

@@ -1,22 +1,26 @@
-import React, { createContext, useEffect, useState } from 'react'
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import React, { createContext, useEffect, useState, ReactChild } from 'react'
+import { auth } from '../firebase/config'
 
 interface AuthContextProps {
   signed: boolean
-  user: FirebaseAuthTypes.User | null
   signOut: () => void
+  user: any // eslint-disable-line
   loading: boolean
   load: () => void
 }
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
-const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null)
+interface IAuthProviderProps {
+  children: ReactChild
+}
+
+function AuthProvider({ children }: IAuthProviderProps) {
+  const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    auth().onAuthStateChanged((userState) => {
+    auth.onAuthStateChanged(userState => {
       if (userState) {
         setUser(userState)
       } else {
@@ -27,7 +31,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }, [loading])
 
   async function signOut() {
-    await auth().signOut()
+    await auth.signOut()
   }
 
   function load() {

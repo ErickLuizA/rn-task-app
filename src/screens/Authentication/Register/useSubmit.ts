@@ -1,15 +1,14 @@
-import { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import { auth } from '../../../firebase/config'
 import useValidator from './useValidator'
 
 interface IProps {
   name: string
   email: string
   password: string
-  setError({}): void
-  auth(): FirebaseAuthTypes.Module
+  setError({}): void // eslint-disable-line
 }
 
-const useSubmit = async ({ name, email, password, setError, auth }: IProps) => {
+const useSubmit = async ({ name, email, password, setError }: IProps) => {
   const valid = useValidator({ name, email, password, setError })
 
   if (!valid) {
@@ -17,7 +16,7 @@ const useSubmit = async ({ name, email, password, setError, auth }: IProps) => {
   }
 
   try {
-    const createdUser = await auth().createUserWithEmailAndPassword(
+    const createdUser = await auth.createUserWithEmailAndPassword(
       email,
       password,
     )

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Dimensions, StyleSheet, View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useTheme } from 'react-native-paper'
@@ -7,13 +7,17 @@ import { ITask } from '../context/TaskContext'
 
 const width = Dimensions.get('screen').width
 
-interface ITaskCard {
+interface ITaskCardProps {
   taskType: string
   data: ITask
   openAppBar: (arg: string) => void
 }
 
-const TaskCard: React.FC<ITaskCard> = ({ taskType, data, openAppBar }) => {
+export default function TaskCard({
+  taskType,
+  data,
+  openAppBar,
+}: ITaskCardProps) {
   const { colors } = useTheme()
 
   return (
@@ -105,5 +109,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
-
-export default TaskCard

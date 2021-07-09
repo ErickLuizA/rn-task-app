@@ -4,8 +4,6 @@ import { View, Dimensions, StyleSheet, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { AuthContext } from '../../../context/AuthContext'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { Picker } from '@react-native-community/picker'
-import ImagePicker from 'react-native-image-picker'
 
 const options = {
   storageOptions: {
@@ -13,9 +11,56 @@ const options = {
   },
 }
 
-interface PhotoModalProps {}
-
 const { width, height } = Dimensions.get('screen')
+
+export default function PhotoModal() {
+  const { user, load } = useContext(AuthContext)
+  const { goBack } = useNavigation()
+  const [select, setSelected] = useState<string | number>('')
+
+  // useEffect(() => {
+  //   if (select === 'Edit') {
+  //     ImagePicker.showImagePicker(options, res => {
+  //       user
+  //         ?.updateProfile({
+  //           photoURL: res.uri,
+  //         })
+  //         .then(() => load())
+  //     })
+  //   }
+
+  //   if (select === 'Delete') {
+  //     user?.updateProfile({ photoURL: '' })
+  //   }
+
+  //   setSelected('')
+  // }, [select, user])
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.row}>
+        <TouchableOpacity onPress={() => goBack()}>
+          <Icon name="keyboard-backspace" size={40} color="#fff" />
+        </TouchableOpacity>
+        {/* <Picker
+          style={styles.picker}
+          mode="dropdown"
+          pointerEvents="auto"
+          selectedValue={select}
+          onValueChange={value => setSelected(value)}>
+          <Picker.Item label="" value="" />
+          <Picker.Item label="Edit" value="Edit" />
+          <Picker.Item label="Delete" value="Delete" />
+        </Picker> */}
+        <Icon name="dots-vertical" size={40} color="#fff" />
+      </View>
+      <Image
+        source={{ uri: user?.photoURL || undefined }}
+        style={{ width: width, height: height / 2, bottom: height / 5 }}
+      />
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -41,52 +86,3 @@ const styles = StyleSheet.create({
     top: 10,
   },
 })
-
-export default function PhotoModal({}: PhotoModalProps) {
-  const { user, load } = useContext(AuthContext)
-  const { goBack } = useNavigation()
-  const [select, setSelected] = useState<string | number>('')
-
-  useEffect(() => {
-    if (select === 'Edit') {
-      ImagePicker.showImagePicker(options, (res) => {
-        user
-          ?.updateProfile({
-            photoURL: res.uri,
-          })
-          .then(() => load())
-      })
-    }
-
-    if (select === 'Delete') {
-      user?.updateProfile({ photoURL: '' })
-    }
-
-    setSelected('')
-  }, [select, user]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <TouchableOpacity onPress={() => goBack()}>
-          <Icon name="keyboard-backspace" size={40} color="#fff" />
-        </TouchableOpacity>
-        <Picker
-          style={styles.picker}
-          mode="dropdown"
-          pointerEvents="auto"
-          selectedValue={select}
-          onValueChange={(value) => setSelected(value)}>
-          <Picker.Item label="" value="" />
-          <Picker.Item label="Edit" value="Edit" />
-          <Picker.Item label="Delete" value="Delete" />
-        </Picker>
-        <Icon name="dots-vertical" size={40} color="#fff" />
-      </View>
-      <Image
-        source={{ uri: user?.photoURL || undefined }}
-        style={{ width: width, height: height / 2, bottom: height / 5 }}
-      />
-    </View>
-  )
-}

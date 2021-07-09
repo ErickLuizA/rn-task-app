@@ -30,9 +30,9 @@ export default function AllTask() {
 
   useEffect(() => {
     setAllTasks(tasks)
-    let array: string[] = []
+    const array: string[] = []
 
-    tasks.forEach((t) => {
+    tasks.forEach(t => {
       if (!array.includes(t.Category)) {
         array.push(t.Category)
       }
@@ -63,7 +63,7 @@ export default function AllTask() {
           </Text>
           <ScrollView>
             {allTasks.length > 0 ? (
-              categories.map((cat) => (
+              categories.map(cat => (
                 <List.Accordion
                   left={() => (
                     <Text
@@ -79,7 +79,7 @@ export default function AllTask() {
                     { backgroundColor: colors.primary },
                   ]}
                   title={cat}>
-                  {allTasks.map((t) => {
+                  {allTasks.map(t => {
                     if (t.Category === cat) {
                       return (
                         <TaskCard

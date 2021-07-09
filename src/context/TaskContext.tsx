@@ -1,5 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import firestore from '@react-native-firebase/firestore'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactChild,
+} from 'react'
+import { firestore } from '../firebase/config'
 import { AuthContext } from './AuthContext'
 
 export interface ITask {
@@ -20,23 +26,27 @@ interface ITasks {
 
 const TaskContext = createContext({} as ITasks)
 
-const TaskProvider: React.FC = ({ children }) => {
+interface ITaskProviderProps {
+  children: ReactChild
+}
+
+function TaskProvider({ children }: ITaskProviderProps) {
   const { user } = useContext(AuthContext)
   const [tasks, setTasks] = useState<ITask[]>([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const colRef = firestore().collection('Users')
+    const colRef = firestore.collection('Users')
 
     ;(async () => {
       const userDoc = colRef.doc(user?.uid)
 
       const taskDoc = await userDoc.collection('Tasks').get()
 
-      let taskArray: any = []
+      const taskArray = []
 
-      taskDoc.forEach((snapshot) => {
-        let data = snapshot.data()
+      taskDoc.forEach(snapshot => {
+        const data = snapshot.data()
         data.Date = data.Date.toDate()
         taskArray.push(data)
       })

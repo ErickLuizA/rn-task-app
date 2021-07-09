@@ -1,41 +1,32 @@
+import React, { useContext } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Appbar, useTheme } from 'react-native-paper'
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native'
-import React, { useContext } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Appbar, useTheme } from 'react-native-paper'
+
 import { AuthContext } from '../context/AuthContext'
 import { TaskContext } from '../context/TaskContext'
+
 import deleteTask from '../screens/Application/utils/deleteTask'
 import updateTask from '../screens/Application/utils/updateTask'
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'space-between',
-  },
-
-  row: {
-    flexDirection: 'row',
-  },
-})
-
-interface AppBarProps {
+interface IAppBarProps {
   task: string
   toggle: () => void
   location: string
 }
 
-export default function AppBar({ task, toggle, location }: AppBarProps) {
+export default function AppBar({ task, toggle, location }: IAppBarProps) {
   const { colors } = useTheme()
   const { user } = useContext(AuthContext)
   const { load, tasks } = useContext(TaskContext)
 
-  const isStarred = () =>
-    tasks.find((t) => t.Name === task && t.Starred === true)
+  const isStarred = () => tasks.find(t => t.Name === task && t.Starred === true)
   const isNotificationOn = () =>
-    tasks.find((t) => t.Name === task && t.Notification === true)
+    tasks.find(t => t.Name === task && t.Notification === true)
 
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
 
@@ -92,3 +83,13 @@ export default function AppBar({ task, toggle, location }: AppBarProps) {
     </Appbar.Header>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'space-between',
+  },
+
+  row: {
+    flexDirection: 'row',
+  },
+})

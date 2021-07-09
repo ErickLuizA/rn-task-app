@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
-import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import { useTheme } from 'react-native-paper'
 import { Text } from 'react-native'
 import { ITask } from '../context/TaskContext'
@@ -12,22 +11,22 @@ interface IProgressProps {
 
 const width = Dimensions.get('screen').width
 
-const Progress: React.FC<IProgressProps> = ({ progressType, tasks }) => {
+export default function Progress({ progressType, tasks }: IProgressProps) {
   const { colors } = useTheme()
 
   const totalTasks = tasks.length
 
-  const doneTasks = tasks.filter((task) => task.Done === true)
+  const doneTasks = tasks.filter(task => task.Done === true)
 
-  function getProgress(): number {
-    const progress = (doneTasks.length * 100) / totalTasks
+  // function getProgress(): number {
+  //   const progress = (doneTasks.length * 100) / totalTasks
 
-    if (doneTasks.length === 0 && totalTasks === 0) {
-      return 0
-    }
+  //   if (doneTasks.length === 0 && totalTasks === 0) {
+  //     return 0
+  //   }
 
-    return progress
-  }
+  //   return progress
+  // }
 
   return (
     <View
@@ -37,14 +36,14 @@ const Progress: React.FC<IProgressProps> = ({ progressType, tasks }) => {
           : styles.notDashboardContainer
       }
       testID="progressContainer">
-      <AnimatedCircularProgress
+      {/* <AnimatedCircularProgress
         size={120}
         width={15}
         fill={getProgress()}
         rotation={360}
         tintColor={colors.secondary}
         backgroundColor={colors.primary}>
-        {(fill) => {
+        {fill => {
           return (
             <Text style={[styles.progressText, { color: colors.secondary }]}>
               {' '}
@@ -52,7 +51,7 @@ const Progress: React.FC<IProgressProps> = ({ progressType, tasks }) => {
             </Text>
           )
         }}
-      </AnimatedCircularProgress>
+      </AnimatedCircularProgress> */}
       <View>
         <Text style={[styles.text, { color: colors.grayText }]}>
           {' '}
@@ -97,5 +96,3 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 })
-
-export default Progress

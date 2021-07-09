@@ -1,4 +1,11 @@
 {
-  "name": "whtodo",
-  "displayName": "whtodo"
+  "expo": {
+    "name": "whtodo",
+    "slug": "whtodo",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "whtodo"
 }

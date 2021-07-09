@@ -8,7 +8,7 @@ import Forgot from '../screens/Authentication/Forgot'
 
 const { Screen, Navigator } = createStackNavigator()
 
-function AuthRoutes() {
+export default function AuthRoutes() {
   return (
     <Navigator
       initialRouteName="Home"
@@ -43,5 +43,3 @@ function AuthRoutes() {
     </Navigator>
   )
 }
-
-export default AuthRoutes

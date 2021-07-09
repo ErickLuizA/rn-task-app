@@ -1,4 +1,4 @@
-import firestore from '@react-native-firebase/firestore'
+import { firestore } from '../../../firebase/config'
 
 interface updateTaskProps {
   user?: string
@@ -15,11 +15,11 @@ export default async function updateTask({
   task,
   load,
 }: updateTaskProps) {
-  const colRef = firestore().collection('Users').doc(user).collection('Tasks')
+  const colRef = firestore.collection('Users').doc(user).collection('Tasks')
   const tasks = await colRef.where('Name', '==', task).get()
 
   if (star === undefined) {
-    tasks.forEach((t) => {
+    tasks.forEach(t => {
       colRef.doc(t.id).update({
         Notification: notifications,
       })
@@ -27,7 +27,7 @@ export default async function updateTask({
   }
 
   if (notifications === undefined) {
-    tasks.forEach((t) => {
+    tasks.forEach(t => {
       colRef.doc(t.id).update({
         Starred: star,
       })

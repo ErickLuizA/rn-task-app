@@ -17,14 +17,13 @@ import { useTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { AuthContext } from '../../../context/AuthContext'
-import DateTimePicker from '@react-native-community/datetimepicker'
-import firestore from '@react-native-firebase/firestore'
 import { AppRoutesParamList } from '../../../routes/App.routes'
 import { TaskContext } from '../../../context/TaskContext'
 import useValidator from './useValidator'
 import Button from './Button'
 import Input from '../../../components/Input'
 import PortalModal from './Portal'
+import { firestore } from '../../../firebase/config'
 
 const width = Dimensions.get('screen').width
 
@@ -33,47 +32,6 @@ type AddScreenRouteProps = RouteProp<AppRoutesParamList, 'Drawer'>
 type Props = {
   route: AddScreenRouteProps
 }
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 26,
-    fontFamily: 'Roboto-Light',
-    alignSelf: 'center',
-    padding: 10,
-  },
-
-  button: {
-    width: width / 1.25,
-    paddingVertical: 10,
-    marginVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: '#cce',
-  },
-
-  buttonText: {
-    fontSize: 18,
-    fontFamily: 'Roboto-Medium',
-  },
-
-  menu: {
-    alignSelf: 'flex-start',
-    width: width / 1.1,
-  },
-
-  container: {
-    paddingTop: StatusBar.currentHeight,
-    paddingHorizontal: 20,
-    flex: 1,
-  },
-
-  view: {
-    paddingTop: StatusBar.currentHeight,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-  },
-})
 
 export default function AddTask({ route }: Props) {
   const { user } = useContext(AuthContext)
@@ -85,7 +43,7 @@ export default function AddTask({ route }: Props) {
   const [categories, setCategories] = useState<string[]>([])
 
   const [task, setTask] = useState('')
-  const [category, setCategory] = useState<any>('')
+  const [category, setCategory] = useState('')
   const [errors, setErrors] = useState({
     taskError: '',
     categoryError: '',
@@ -113,9 +71,9 @@ export default function AddTask({ route }: Props) {
   const modalCategory = useRef('')
 
   useEffect(() => {
-    let array: string[] = []
+    const array: string[] = []
 
-    tasks.forEach((t) => {
+    tasks.forEach(t => {
       if (!array.includes(t.Category)) {
         array.push(t.Category)
       }
@@ -136,7 +94,7 @@ export default function AddTask({ route }: Props) {
 
     if (valid) {
       if (user) {
-        const colRef = firestore().collection('Users')
+        const colRef = firestore.collection('Users')
 
         const userDoc = colRef.doc(user.uid)
 
@@ -206,7 +164,7 @@ export default function AddTask({ route }: Props) {
           modalCategory={modalCategory}
         />
 
-        {show ? (
+        {/* {show ? (
           <DateTimePicker
             value={date}
             is24Hour={true}
@@ -256,7 +214,7 @@ export default function AddTask({ route }: Props) {
               <Icon color={colors.secondary} name="access-time" size={40} />
             </>
           </Button>
-        )}
+        )} */}
 
         {!notificationOn ? (
           <TouchableOpacity
@@ -298,3 +256,44 @@ export default function AddTask({ route }: Props) {
     </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 26,
+    fontFamily: 'Roboto-Light',
+    alignSelf: 'center',
+    padding: 10,
+  },
+
+  button: {
+    width: width / 1.25,
+    paddingVertical: 10,
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: '#cce',
+  },
+
+  buttonText: {
+    fontSize: 18,
+    fontFamily: 'Roboto-Medium',
+  },
+
+  menu: {
+    alignSelf: 'flex-start',
+    width: width / 1.1,
+  },
+
+  container: {
+    paddingTop: StatusBar.currentHeight,
+    paddingHorizontal: 20,
+    flex: 1,
+  },
+
+  view: {
+    paddingTop: StatusBar.currentHeight,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+})

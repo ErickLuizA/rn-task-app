@@ -1,4 +1,4 @@
-import React, { ReactChild, ReactChildren } from 'react'
+import React, { ReactChild } from 'react'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useTheme } from 'react-native-paper'

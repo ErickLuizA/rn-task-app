@@ -10,13 +10,13 @@ export type AppRoutesParamList = {
   Drawer: { result: string }
   Task: { action: string; task: string }
   AddTask: { result: string }
-  Account: {}
-  PhotoModal: {}
+  Account: Record<string, unknown>
+  PhotoModal: Record<string, unknown>
 }
 
 const { Screen, Navigator } = createStackNavigator<AppRoutesParamList>()
 
-function AppRoutes() {
+export default function AppRoutes() {
   return (
     <Navigator
       initialRouteName="Drawer"
@@ -57,5 +57,3 @@ function AppRoutes() {
     </Navigator>
   )
 }
-
-export default AppRoutes

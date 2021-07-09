@@ -19,6 +19,64 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 const width = Dimensions.get('screen').width
 
+interface IPortalModalProps {
+  closeCategoryModal(): void
+  isCategoryModal: boolean
+  categories: string[]
+  setCategory(arg: string): void
+  onPress(): void
+  modalCategory: MutableRefObject<string>
+}
+
+export default function PortalModal({
+  closeCategoryModal,
+  isCategoryModal,
+  categories,
+  setCategory,
+  onPress,
+  modalCategory,
+}: IPortalModalProps) {
+  const { colors } = useTheme()
+  return (
+    <Portal>
+      <Modal
+        contentContainerStyle={[
+          styles.modal,
+          { backgroundColor: colors.primary },
+        ]}
+        onDismiss={closeCategoryModal}
+        visible={isCategoryModal}>
+        <ScrollView>
+          {categories.map(cat => (
+            <List.Item
+              onPress={() => setCategory(cat)}
+              title={cat}
+              key={cat}
+              style={styles.listItem}
+            />
+          ))}
+          <View style={styles.row}>
+            <Divider style={styles.divider} />
+            <Text style={[{ color: colors.text }, styles.or]}>or</Text>
+            <Divider style={styles.divider} />
+          </View>
+          <TextInput
+            testID="categoryInput"
+            onChangeText={text => (modalCategory.current = text)}
+            label="Category name"
+            mode="flat"
+            style={styles.input}
+          />
+          <TouchableOpacity style={styles.button} onPress={onPress}>
+            <Text style={{ color: colors.secondary }}>Add Category</Text>
+            <Icon name="add" size={40} color={colors.secondary} />
+          </TouchableOpacity>
+        </ScrollView>
+      </Modal>
+    </Portal>
+  )
+}
+
 const styles = StyleSheet.create({
   button: {
     width: width / 1.25,
@@ -66,63 +124,3 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 })
-
-interface IPortal {
-  closeCategoryModal(): void
-  isCategoryModal: boolean
-  categories: string[]
-  setCategory(arg: string): void
-  onPress(): void
-  modalCategory: MutableRefObject<string>
-}
-
-const PortalModal = ({
-  closeCategoryModal,
-  isCategoryModal,
-  categories,
-  setCategory,
-  onPress,
-  modalCategory,
-}: IPortal) => {
-  const { colors } = useTheme()
-  return (
-    <Portal>
-      <Modal
-        contentContainerStyle={[
-          styles.modal,
-          { backgroundColor: colors.primary },
-        ]}
-        onDismiss={closeCategoryModal}
-        visible={isCategoryModal}>
-        <ScrollView>
-          {categories.map((cat) => (
-            <List.Item
-              onPress={() => setCategory(cat)}
-              title={cat}
-              key={cat}
-              style={styles.listItem}
-            />
-          ))}
-          <View style={styles.row}>
-            <Divider style={styles.divider} />
-            <Text style={[{ color: colors.text }, styles.or]}>or</Text>
-            <Divider style={styles.divider} />
-          </View>
-          <TextInput
-            testID="categoryInput"
-            onChangeText={(text) => (modalCategory.current = text)}
-            label="Category name"
-            mode="flat"
-            style={styles.input}
-          />
-          <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={{ color: colors.secondary }}>Add Category</Text>
-            <Icon name="add" size={40} color={colors.secondary} />
-          </TouchableOpacity>
-        </ScrollView>
-      </Modal>
-    </Portal>
-  )
-}
-
-export default PortalModal

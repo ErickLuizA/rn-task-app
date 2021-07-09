@@ -8,48 +8,13 @@ import UpperProfile from '../../../components/UpperProfile'
 import { AuthContext } from '../../../context/AuthContext'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Button from '../../../components/Button'
-import auth from '@react-native-firebase/auth'
-
-interface AccountProps {}
+import { auth } from '../../../firebase/config'
 
 const { height, width } = Dimensions.get('screen')
 
-const styles = StyleSheet.create({
-  group: {
-    alignSelf: 'flex-start',
-    top: -height / 8,
-    marginVertical: 20,
-  },
-
-  label: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Medium',
-  },
-
-  text: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Light',
-  },
-
-  button: {
-    width: width / 1.25,
-  },
-
-  buttonText: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Light',
-    textAlign: 'center',
-    backgroundColor: '#b00',
-    paddingVertical: 20,
-    borderRadius: 8,
-    color: '#fff',
-  },
-})
-
-export default function Account({}: AccountProps) {
-  const { goBack, navigate } = useNavigation<
-    DrawerNavigationProp<ParamListBase>
-  >()
+export default function Account() {
+  const { goBack, navigate } =
+    useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { colors } = useTheme()
   const { user, load } = useContext(AuthContext)
   const [snack, setSnack] = useState(false)
@@ -79,7 +44,7 @@ export default function Account({}: AccountProps) {
   const handleSubmit = async () => {
     try {
       if (user?.email) {
-        await auth().sendPasswordResetEmail(user.email)
+        await auth.sendPasswordResetEmail(user.email)
       }
       setSnack(true)
     } catch (e) {
@@ -117,3 +82,35 @@ export default function Account({}: AccountProps) {
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  group: {
+    alignSelf: 'flex-start',
+    top: -height / 8,
+    marginVertical: 20,
+  },
+
+  label: {
+    fontSize: 20,
+    fontFamily: 'Roboto-Medium',
+  },
+
+  text: {
+    fontSize: 20,
+    fontFamily: 'Roboto-Light',
+  },
+
+  button: {
+    width: width / 1.25,
+  },
+
+  buttonText: {
+    fontSize: 20,
+    fontFamily: 'Roboto-Light',
+    textAlign: 'center',
+    backgroundColor: '#b00',
+    paddingVertical: 20,
+    borderRadius: 8,
+    color: '#fff',
+  },
+})

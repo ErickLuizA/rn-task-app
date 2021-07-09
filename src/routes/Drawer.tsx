@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
+import { Text } from 'react-native'
+import { Avatar, useTheme } from 'react-native-paper'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 
-import Dashboard from '../screens/Application/Dashboard'
 import { AuthContext } from '../context/AuthContext'
-import { Avatar, useTheme } from 'react-native-paper'
+
+import Dashboard from '../screens/Application/Dashboard'
 import Settings from '../screens/Application/Settings'
-import { Text } from 'react-native'
 import AddTask from '../screens/Application/AddTask'
 import Starred from '../screens/Application/Starred'
 import Done from '../screens/Application/Done'
@@ -13,7 +14,7 @@ import AllTask from '../screens/Application/AllTask'
 
 const { Screen, Navigator } = createDrawerNavigator()
 
-function Drawer() {
+export default function Drawer() {
   const { user } = useContext(AuthContext)
   const { colors } = useTheme()
 
@@ -123,5 +124,3 @@ function Drawer() {
     </Navigator>
   )
 }
-
-export default Drawer

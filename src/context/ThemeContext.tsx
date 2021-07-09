@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState, ReactChild } from 'react'
 import {
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
@@ -9,7 +9,7 @@ import {
   DefaultTheme as PaperDefaultTheme,
   Provider as PaperProvider,
 } from 'react-native-paper'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import phoneman from '../../assets/phoneman.svg'
 import phoneman_dark from '../../assets/phoneman_dark.svg'
@@ -63,6 +63,7 @@ const CombinedDarkTheme = {
 }
 
 declare global {
+  // eslint-disable-next-line
   namespace ReactNativePaper {
     interface ThemeColors {
       secondary: string
@@ -73,6 +74,7 @@ declare global {
       purpleInput: string
       activeDrawer: string
     }
+
     interface images {
       phoneman: SVGElement
       notfound: SVGElement
@@ -85,15 +87,20 @@ interface ContextProps {
   toggle: () => void
 }
 
-export const ThemeContext = createContext({} as ContextProps)
+const ThemeContext = createContext({} as ContextProps)
 
-const ThemeProvider: React.FC = ({ children }) => {
+interface IThemeProviderProps {
+  children: ReactChild
+}
+
+function ThemeProvider({ children }: IThemeProviderProps) {
   const [dark, setDark] = useState(false)
 
   const theme = dark ? CombinedDarkTheme : CombinedDefaultTheme
 
   useEffect(() => {
-    ;(async () => {
+    // eslint-disable-next-line
+    (async () => {
       const storagedTheme = await AsyncStorage.getItem('@RNTheme')
 
       if (storagedTheme === 'dark') {
@@ -110,7 +117,7 @@ const ThemeProvider: React.FC = ({ children }) => {
     } else {
       await AsyncStorage.setItem('@RNTheme', 'dark')
     }
-    setDark((state) => !state)
+    setDark(state => !state)
   }
 
   return (
@@ -122,4 +129,4 @@ const ThemeProvider: React.FC = ({ children }) => {
   )
 }
 
-export default ThemeProvider
+export { ThemeProvider, ThemeContext }

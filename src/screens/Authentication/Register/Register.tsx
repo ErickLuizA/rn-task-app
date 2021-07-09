@@ -1,16 +1,93 @@
-import * as React from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import { Divider, Title, useTheme } from 'react-native-paper'
 import Container from '../../../components/Container'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
-import auth from '@react-native-firebase/auth'
+
 import useSubmit from './useSubmit'
 import handleGoogleLogin from '../common/handleGoogleLogin'
 import GoogleButton from '../common/GoogleButton'
 import Input from '../../../components/Input'
 
 const width = Dimensions.get('screen').width
+
+export default function Register() {
+  const { colors } = useTheme()
+  const navigation = useNavigation()
+
+  const [name, setName] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [error, setError] = React.useState({
+    nameError: '',
+    emailError: '',
+    passwordError: '',
+  })
+
+  function handleNavigation() {
+    navigation.navigate('Login')
+  }
+
+  function useForm() {
+    useSubmit({ name, email, password, setError })
+  }
+
+  return (
+    <Container>
+      <Title
+        style={[styles.title, { color: colors.secondary }]}
+        testID="registerTitle">
+        Create your free account to join us!
+      </Title>
+      <GoogleButton onPress={() => handleGoogleLogin} />
+      <View style={styles.row}>
+        <Divider style={styles.divider} />
+        <Text style={[{ color: colors.text }, styles.or]}>or</Text>
+        <Divider style={styles.divider} />
+      </View>
+
+      <Input
+        input={name}
+        inputName="name"
+        setState={setName}
+        error={error.nameError}
+      />
+
+      <Input
+        input={email}
+        inputName="email"
+        setState={setEmail}
+        error={error.emailError}
+      />
+
+      <Input
+        input={password}
+        inputName="password"
+        setState={setPassword}
+        error={error.passwordError}
+      />
+
+      <TouchableOpacity
+        testID="submitRegisterButton"
+        onPress={useForm}
+        style={[styles.button, { backgroundColor: colors.primary }]}>
+        <Text style={styles.buttonText}>REGISTER</Text>
+      </TouchableOpacity>
+      <View style={styles.row}>
+        <Text style={[styles.text, { color: colors.text }]}>
+          Already have a account?
+        </Text>
+        <TouchableOpacity onPress={handleNavigation} testID="sendToLogin">
+          <Text style={[{ color: colors.secondary }, styles.login]}>
+            {' '}
+            Login
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </Container>
+  )
+}
 
 const styles = StyleSheet.create({
   title: {
@@ -89,80 +166,3 @@ const styles = StyleSheet.create({
     width: width / 1.25,
   },
 })
-
-export default function Register() {
-  const { colors } = useTheme()
-  const navigation = useNavigation()
-
-  const [name, setName] = React.useState('')
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [error, setError] = React.useState({
-    nameError: '',
-    emailError: '',
-    passwordError: '',
-  })
-
-  function handleNavigation() {
-    navigation.navigate('Login')
-  }
-
-  function useForm() {
-    useSubmit({ name, email, password, setError, auth })
-  }
-
-  return (
-    <Container>
-      <Title
-        style={[styles.title, { color: colors.secondary }]}
-        testID="registerTitle">
-        Create your free account to join us!
-      </Title>
-      <GoogleButton onPress={() => handleGoogleLogin} />
-      <View style={styles.row}>
-        <Divider style={styles.divider} />
-        <Text style={[{ color: colors.text }, styles.or]}>or</Text>
-        <Divider style={styles.divider} />
-      </View>
-
-      <Input
-        input={name}
-        inputName="name"
-        setState={setName}
-        error={error.nameError}
-      />
-
-      <Input
-        input={email}
-        inputName="email"
-        setState={setEmail}
-        error={error.emailError}
-      />
-
-      <Input
-        input={password}
-        inputName="password"
-        setState={setPassword}
-        error={error.passwordError}
-      />
-
-      <TouchableOpacity
-        testID="submitRegisterButton"
-        onPress={useForm}
-        style={[styles.button, { backgroundColor: colors.primary }]}>
-        <Text style={styles.buttonText}>REGISTER</Text>
-      </TouchableOpacity>
-      <View style={styles.row}>
-        <Text style={[styles.text, { color: colors.text }]}>
-          Already have a account?
-        </Text>
-        <TouchableOpacity onPress={handleNavigation} testID="sendToLogin">
-          <Text style={[{ color: colors.secondary }, styles.login]}>
-            {' '}
-            Login
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </Container>
-  )
-}

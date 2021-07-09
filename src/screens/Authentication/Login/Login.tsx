@@ -4,7 +4,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import Container from '../../../components/Container'
 import { useNavigation } from '@react-navigation/native'
 import { Divider, Title, useTheme } from 'react-native-paper'
-import auth from '@react-native-firebase/auth'
 import useSubmit from './useSubmit'
 import handleGoogleLogin from '../common/handleGoogleLogin'
 import GoogleButton from '../common/GoogleButton'
@@ -29,7 +28,7 @@ export default function Login() {
   }
 
   function useForm() {
-    useSubmit({ email, password, setError, auth })
+    useSubmit({ email, password, setError })
   }
 
   function handleForgotPass() {
@@ -71,7 +70,7 @@ export default function Login() {
       <Button onPress={useForm} text="LOGIN" big />
       <View style={styles.row}>
         <Text style={[styles.text, { color: colors.text }]}>
-          Don't have a account?
+          Don&apos;t have a account?
         </Text>
         <TouchableOpacity onPress={handleNavigation} testID="sendToRegister">
           <Text style={[{ color: colors.secondary }, styles.register]}>

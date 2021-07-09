@@ -1,10 +1,26 @@
-import * as React from 'react'
+import React from 'react'
 import { StyleSheet, StatusBar } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-interface IProps {
+interface IContainerProps {
+  children: React.ReactNode
   upper?: boolean
+}
+
+export default function Container({ children, upper }: IContainerProps) {
+  const { colors } = useTheme()
+
+  return (
+    <SafeAreaView
+      testID="container"
+      style={[
+        { backgroundColor: colors.background },
+        upper ? styles.smallContainer : styles.container,
+      ]}>
+      {children}
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -23,20 +39,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
-
-const Container: React.FC<IProps> = ({ children, upper }) => {
-  const { colors } = useTheme()
-
-  return (
-    <SafeAreaView
-      testID="container"
-      style={[
-        { backgroundColor: colors.background },
-        upper ? styles.smallContainer : styles.container,
-      ]}>
-      {children}
-    </SafeAreaView>
-  )
-}
-
-export default Container

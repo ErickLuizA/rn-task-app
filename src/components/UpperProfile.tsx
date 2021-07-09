@@ -1,7 +1,3 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { AuthContext } from '../context/AuthContext'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import { Avatar, useTheme } from 'react-native-paper'
 import React, { useContext } from 'react'
 import {
   View,
@@ -11,16 +7,24 @@ import {
   StatusBar,
   TouchableOpacity,
 } from 'react-native'
+import { Avatar, useTheme } from 'react-native-paper'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import { AuthContext } from '../context/AuthContext'
 
 const width = Dimensions.get('screen').width
 
-interface IProps {
+interface IUpperProfileProps {
   openDrawer: () => void
   account?: boolean
   openPhoto?: () => void
 }
 
-const UpperProfile: React.FC<IProps> = ({ openDrawer, account, openPhoto }) => {
+export default function UpperProfile({
+  openDrawer,
+  account,
+  openPhoto,
+}: IUpperProfileProps) {
   const { user } = useContext(AuthContext)
   const { colors } = useTheme()
 
@@ -100,5 +104,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 })
-
-export default UpperProfile

@@ -1,4 +1,4 @@
-import firestore from '@react-native-firebase/firestore'
+import { firestore } from '../../../firebase/config'
 
 interface UpdateProps {
   Content: string
@@ -13,11 +13,11 @@ const UpdateTaskContent = async ({
   user,
   load,
 }: UpdateProps) => {
-  const colTask = firestore().collection('Users').doc(user).collection('Tasks')
+  const colTask = firestore.collection('Users').doc(user).collection('Tasks')
 
   const tasks = await colTask.where('Name', '==', taskName).get()
 
-  tasks.forEach((t) => {
+  tasks.forEach(t => {
     colTask.doc(t.data().id).update({
       Content,
     })

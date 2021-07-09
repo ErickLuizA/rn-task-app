@@ -26,7 +26,7 @@ export default function Starred() {
   const { open, closeBar, openAppBar } = useOpenBar()
 
   useEffect(() => {
-    const starred = tasks.filter((t) => t.Starred === true)
+    const starred = tasks.filter(t => t.Starred === true)
 
     setStarredTasks(starred)
   }, [tasks])
@@ -60,7 +60,7 @@ export default function Starred() {
             {starredTasks.length === 0 ? (
               <NotFound label="Star one task" onPress={handleStar} />
             ) : (
-              starredTasks.map((star) => (
+              starredTasks.map(star => (
                 <TaskCard
                   key={star.Name}
                   openAppBar={openAppBar}

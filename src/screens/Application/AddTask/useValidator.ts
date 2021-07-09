@@ -1,5 +1,5 @@
 interface IValidation {
-  setErrors({}): void
+  setErrors({}): void // eslint-disable-line
   task: string
   category: string
   displayDate: string

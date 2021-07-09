@@ -3,10 +3,10 @@ import { AppRoutesParamList } from '../../../routes/App.routes'
 import { TextInput, Dimensions, View, StyleSheet } from 'react-native'
 import Header from '../../../components/Header'
 import { RouteProp, useNavigation } from '@react-navigation/native'
-import firestore from '@react-native-firebase/firestore'
 import { AuthContext } from '../../../context/AuthContext'
 import updateTask from './updateTaskContent'
 import { TaskContext } from '../../../context/TaskContext'
+import { firestore } from '../../../firebase/config'
 
 type TaskScreenRouteProps = RouteProp<AppRoutesParamList, 'Task'>
 
@@ -23,24 +23,24 @@ export default function Task({ route }: Props) {
 
   const navigation = useNavigation()
 
-  const colTask = firestore()
+  const colTask = firestore
     .collection('Users')
     .doc(user?.uid)
     .collection('Tasks')
 
   useEffect(() => {
     if (route.params.task) {
+      // eslint-disable-next-line
       (async () => {
         const tasks = await colTask.where('Name', '==', route.params.task).get()
 
-        tasks.forEach((task) => {
+        tasks.forEach(task => {
           setValue(task.data().Content)
         })
       })()
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleCheck = () => {
     if (route.params.action === 'new') {
       navigation.navigate('AddTask', { result: value })
@@ -71,7 +71,7 @@ export default function Task({ route }: Props) {
         multiline
         autoFocus
         value={value}
-        onChangeText={(text) => setValue(text)}
+        onChangeText={text => setValue(text)}
       />
     </View>
   )

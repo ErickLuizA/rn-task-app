@@ -25,10 +25,10 @@ export default function Dashboard() {
   }
 
   const checkTodayTask = () =>
-    tasks.find((task) => task.Date.getDate() === new Date().getDate())
+    tasks.find(task => task.Date.getDate() === new Date().getDate())
 
   const getTodayTasks = () =>
-    tasks.filter((t) => t.Date.getDate() === new Date().getDate())
+    tasks.filter(t => t.Date.getDate() === new Date().getDate())
 
   return (
     <>
@@ -46,7 +46,7 @@ export default function Dashboard() {
           </Text>
           <ScrollView>
             {checkTodayTask() ? (
-              tasks.map((task) => {
+              tasks.map(task => {
                 if (task.Date.getDate() === new Date().getDate()) {
                   return (
                     <TaskCard

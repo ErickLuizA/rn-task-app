@@ -2,7 +2,7 @@ import React from 'react'
 import { Dimensions, StyleSheet, Text } from 'react-native'
 import { TextInput, useTheme } from 'react-native-paper'
 
-interface IInput {
+interface IInputProps {
   input: string
   inputName: string
   error: string
@@ -12,21 +12,15 @@ interface IInput {
 
 const width = Dimensions.get('screen').width
 
-const styles = StyleSheet.create({
-  input: {
-    width: width / 1.25,
-    marginVertical: 10,
-    color: 'red',
-  },
-  error: {
-    color: '#f00',
-    textAlign: 'left',
-    width: width / 1.25,
-  },
-})
-
-const Input = ({ input, inputName, error, setState, color }: IInput) => {
+export default function Input({
+  input,
+  inputName,
+  error,
+  setState,
+  color,
+}: IInputProps) {
   const { colors } = useTheme()
+
   return (
     <>
       <TextInput
@@ -46,7 +40,7 @@ const Input = ({ input, inputName, error, setState, color }: IInput) => {
             ? 'emailAddress'
             : 'name'
         }
-        onChangeText={(text) => setState(text)}
+        onChangeText={text => setState(text)}
         label={`Enter your ${inputName}`}
         mode="flat"
         style={[
@@ -67,4 +61,15 @@ const Input = ({ input, inputName, error, setState, color }: IInput) => {
   )
 }
 
-export default Input
+const styles = StyleSheet.create({
+  input: {
+    width: width / 1.25,
+    marginVertical: 10,
+    color: 'red',
+  },
+  error: {
+    color: '#f00',
+    textAlign: 'left',
+    width: width / 1.25,
+  },
+})

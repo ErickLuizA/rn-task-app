@@ -3,11 +3,11 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-interface IProps {
+interface IHeaderProps {
   handleCheck(): void
 }
 
-export default function Header({ handleCheck }: IProps) {
+export default function Header({ handleCheck }: IHeaderProps) {
   const { colors } = useTheme()
 
   return (

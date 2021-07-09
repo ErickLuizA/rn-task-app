@@ -12,6 +12,30 @@ import Button from '../../../components/Button'
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
+export default function Home() {
+  const { colors } = useTheme()
+  const navigation = useNavigation<NavigationProp<ParamListBase>>()
+
+  function handleNavigation(props: string) {
+    navigation.navigate(props)
+  }
+
+  return (
+    <Container>
+      <Text style={[{ color: colors.text }, styles.text]} testID="text">
+        {' '}
+        Now you know
+        <Text style={[{ color: colors.secondary }, styles.italicText]}>
+          {' '}
+          whtodo{' '}
+        </Text>
+      </Text>
+      <Button onPress={() => handleNavigation('Login')} text="LOGIN" />
+      <Button onPress={() => handleNavigation('Register')} text="REGISTER" />
+    </Container>
+  )
+}
+
 const styles = StyleSheet.create({
   button: {
     paddingVertical: 20,
@@ -35,28 +59,3 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-LightItalic',
   },
 })
-
-export default function Home() {
-  const { colors, images } = useTheme()
-  const navigation = useNavigation<NavigationProp<ParamListBase>>()
-
-  function handleNavigation(props: string) {
-    navigation.navigate(props)
-  }
-
-  return (
-    <Container>
-      <images.phoneman width={width / 1.5} height={width / 1.5} testID="img" />
-      <Text style={[{ color: colors.text }, styles.text]} testID="text">
-        {' '}
-        Now you know
-        <Text style={[{ color: colors.secondary }, styles.italicText]}>
-          {' '}
-          whtodo{' '}
-        </Text>
-      </Text>
-      <Button onPress={() => handleNavigation('Login')} text="LOGIN" />
-      <Button onPress={() => handleNavigation('Register')} text="REGISTER" />
-    </Container>
-  )
-}

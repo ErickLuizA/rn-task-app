@@ -5,7 +5,7 @@ import Auth from '../../../../assets/auth.svg'
 import { Paragraph, Snackbar, Title, useTheme } from 'react-native-paper'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
-import auth from '@react-native-firebase/auth'
+import { auth } from '../../../firebase/config'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Button from '../../../components/Button'
 import Input from '../../../components/Input'
@@ -33,7 +33,7 @@ export default function Forgot() {
     }
 
     try {
-      await auth().sendPasswordResetEmail(email)
+      await auth.sendPasswordResetEmail(email)
       toggleSnackBar()
       setInterval(() => navigation.navigate('Login'), 3000)
     } catch (e) {
@@ -42,7 +42,7 @@ export default function Forgot() {
   }
 
   function toggleSnackBar() {
-    setVisible((state) => !state)
+    setVisible(state => !state)
   }
 
   return (
@@ -71,7 +71,7 @@ export default function Forgot() {
       <Button onPress={handleSubmit} big text="RESET PASSWORD" />
       <View style={styles.row}>
         <Text style={[styles.registerText, { color: colors.text }]}>
-          Don't have a account?
+          Don&apos;t have a account?
         </Text>
         <TouchableOpacity onPress={handleNavigation}>
           <Text style={[{ color: colors.secondary }, styles.register]}>

@@ -1,7 +1,3 @@
-<p align="center"> 
-  <img alt="whtodo icon" src=".github/Dashboard.jpeg"  width="280"/>
-</p>
-
 <h1 align="center"> whtodo </h1>
 
 <p align="center">

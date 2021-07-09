@@ -25,7 +25,7 @@ export default function Starred() {
   const { open, closeBar, openAppBar } = useOpenBar()
 
   useEffect(() => {
-    const done = tasks.filter((t) => t.Progress === true)
+    const done = tasks.filter(t => t.Progress === true)
 
     setDoneTasks(done)
   }, [tasks])
@@ -58,7 +58,7 @@ export default function Starred() {
             {doneTasks.length === 0 ? (
               <NotFound label="Complete one task" onPress={handleDone} />
             ) : (
-              doneTasks.map((done) => (
+              doneTasks.map(done => (
                 <TaskCard
                   key={done.Name}
                   openAppBar={openAppBar}
