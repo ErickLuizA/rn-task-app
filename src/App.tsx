@@ -1,15 +1,17 @@
 import 'react-native-gesture-handler'
 import React from 'react'
+import { LogBox } from 'react-native'
 import AppLoading from 'expo-app-loading'
 import { useFonts } from 'expo-font'
+import { Provider } from 'react-redux'
 
-import { ThemeProvider } from './context/ThemeContext'
-import { AuthProvider } from './context/AuthContext'
-import { TaskProvider } from './context/TaskContext'
-
+import store from './redux/store'
+import ThemeProvider from './theme/provider'
 import Screens from './routes/index'
 
 export default function App() {
+  LogBox.ignoreLogs(['Setting a timer'])
+
   const [loaded] = useFonts({
     'Roboto-Black': require('../assets/fonts/Roboto-Black.ttf'),
     'Roboto-BlackItalic': require('../assets/fonts/Roboto-BlackItalic.ttf'),
@@ -30,12 +32,10 @@ export default function App() {
   }
 
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <ThemeProvider>
-        <TaskProvider>
-          <Screens />
-        </TaskProvider>
+        <Screens />
       </ThemeProvider>
-    </AuthProvider>
+    </Provider>
   )
 }
