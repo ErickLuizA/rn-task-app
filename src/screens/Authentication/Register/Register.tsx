@@ -1,168 +1,165 @@
-import React from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
-import { Divider, Title, useTheme } from 'react-native-paper'
-import Container from '../../../components/Container'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import React, { useState } from 'react'
+import { KeyboardAvoidingView, Platform, View } from 'react-native'
+import { Divider, Title, useTheme, Text, Snackbar } from 'react-native-paper'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
+import * as Google from 'expo-auth-session/providers/google'
 
-import useSubmit from './useSubmit'
-import handleGoogleLogin from '../common/handleGoogleLogin'
-import GoogleButton from '../common/GoogleButton'
+import { useReduxDispatch, useReduxSelector } from '../../../redux/store'
+import {
+  dismissGoogleError,
+  loginWithGoogle,
+  registerWithEmail,
+} from '../../../redux/slices/authSlice'
+
+import Container from '../../../components/Container'
+import GoogleButton from '../../../components/GoogleButton'
 import Input from '../../../components/Input'
+import Button from '../../../components/Button'
 
-const width = Dimensions.get('screen').width
+import styles from './styles'
 
 export default function Register() {
   const { colors } = useTheme()
-  const navigation = useNavigation()
 
-  const [name, setName] = React.useState('')
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [error, setError] = React.useState({
+  const { navigate } = useNavigation()
+
+  const dispatch = useReduxDispatch()
+
+  const { loading, registerError, googleError } = useReduxSelector(
+    state => state.auth
+  )
+
+  const [, , promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: process.env.WEB_CLIENT_ID,
+  })
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState({
     nameError: '',
     emailError: '',
     passwordError: '',
   })
 
-  function handleNavigation() {
-    navigation.navigate('Login')
+  function handleSubmit() {
+    setError({
+      nameError: '',
+      emailError: '',
+      passwordError: '',
+    })
+
+    if (name.length === 0) {
+      return setError({
+        nameError: 'You need to fill this field',
+        emailError: '',
+        passwordError: '',
+      })
+    }
+
+    if (email.length === 0) {
+      return setError({
+        nameError: '',
+        emailError: 'You need to fill this field',
+        passwordError: '',
+      })
+    }
+
+    if (password.length === 0) {
+      return setError({
+        nameError: '',
+        emailError: '',
+        passwordError: 'You need to fill this field',
+      })
+    }
+
+    dispatch(registerWithEmail(name, email, password))
   }
 
-  function useForm() {
-    useSubmit({ name, email, password, setError })
+  async function handleGoogleLogin() {
+    const result = await promptAsync()
+
+    if (result?.type == 'success') {
+      const { id_token } = result.params
+
+      dispatch(loginWithGoogle(id_token))
+    }
   }
 
   return (
-    <Container>
-      <Title
-        style={[styles.title, { color: colors.secondary }]}
-        testID="registerTitle">
-        Create your free account to join us!
-      </Title>
-      <GoogleButton onPress={() => handleGoogleLogin} />
-      <View style={styles.row}>
-        <Divider style={styles.divider} />
-        <Text style={[{ color: colors.text }, styles.or]}>or</Text>
-        <Divider style={styles.divider} />
-      </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <ScrollView>
+        <Container>
+          <Title
+            style={[styles.title, { color: colors.secondary }]}
+            testID="registerTitle">
+            Create your free account to join us!
+          </Title>
 
-      <Input
-        input={name}
-        inputName="name"
-        setState={setName}
-        error={error.nameError}
-      />
+          <GoogleButton onPress={handleGoogleLogin} />
 
-      <Input
-        input={email}
-        inputName="email"
-        setState={setEmail}
-        error={error.emailError}
-      />
+          <View style={styles.row}>
+            <Divider style={styles.divider} />
+            <Text style={[{ color: colors.text }, styles.or]}>or</Text>
+            <Divider style={styles.divider} />
+          </View>
 
-      <Input
-        input={password}
-        inputName="password"
-        setState={setPassword}
-        error={error.passwordError}
-      />
+          <Input
+            input={name}
+            inputName="name"
+            setState={setName}
+            error={error.nameError}
+          />
 
-      <TouchableOpacity
-        testID="submitRegisterButton"
-        onPress={useForm}
-        style={[styles.button, { backgroundColor: colors.primary }]}>
-        <Text style={styles.buttonText}>REGISTER</Text>
-      </TouchableOpacity>
-      <View style={styles.row}>
-        <Text style={[styles.text, { color: colors.text }]}>
-          Already have a account?
-        </Text>
-        <TouchableOpacity onPress={handleNavigation} testID="sendToLogin">
-          <Text style={[{ color: colors.secondary }, styles.login]}>
-            {' '}
-            Login
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </Container>
+          <Input
+            input={email}
+            inputName="email"
+            setState={setEmail}
+            error={error.emailError}
+          />
+
+          <Input
+            input={password}
+            inputName="password"
+            setState={setPassword}
+            error={error.passwordError}
+          />
+
+          {registerError ? (
+            <Text style={styles.error}>{registerError}</Text>
+          ) : null}
+
+          <Button
+            onPress={handleSubmit}
+            text="REGISTER"
+            big
+            loading={loading}
+          />
+
+          <View style={styles.row}>
+            <Text style={[styles.text, { color: colors.text }]}>
+              Already have a account?{' '}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => navigate('Login')}
+              testID="sendToLogin">
+              <Text style={[{ color: colors.secondary }, styles.login]}>
+                Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Snackbar
+            visible={Boolean(googleError)}
+            onDismiss={() => dispatch(dismissGoogleError())}>
+            {googleError}
+          </Snackbar>
+        </Container>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
-
-const styles = StyleSheet.create({
-  title: {
-    fontFamily: 'Roboto-Light',
-    marginBottom: 40,
-    fontSize: 26,
-    width: width / 1.5,
-    marginRight: 'auto',
-    paddingHorizontal: 20,
-  },
-
-  googleButtonText: {
-    fontFamily: 'Roboto-Light',
-    fontSize: 18,
-  },
-
-  googleButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    marginVertical: 20,
-    width: width / 1.25,
-    justifyContent: 'space-evenly',
-    borderRadius: 5,
-  },
-
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-
-  divider: {
-    marginTop: 10,
-    marginBottom: 10,
-    height: 2,
-    width: width / 3,
-    marginHorizontal: 10,
-  },
-
-  or: {
-    fontFamily: 'Roboto-Light',
-    fontSize: 18,
-    marginBottom: 10,
-  },
-
-  input: {
-    width: width / 1.25,
-    backgroundColor: '#fafafa',
-    marginVertical: 10,
-  },
-
-  button: {
-    paddingVertical: 20,
-    width: width / 1.25,
-    marginTop: 10,
-    borderRadius: 5,
-  },
-
-  buttonText: {
-    textAlign: 'center',
-    fontFamily: 'Roboto-Light',
-    fontSize: 18,
-  },
-
-  text: {
-    fontFamily: 'Roboto-Regular',
-  },
-
-  login: {
-    fontFamily: 'Roboto-Italic',
-  },
-  error: {
-    color: '#f00',
-    textAlign: 'left',
-    width: width / 1.25,
-  },
-})

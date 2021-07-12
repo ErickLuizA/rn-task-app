@@ -1,7 +1,6 @@
 import React from 'react'
-import { Dimensions, StyleSheet, Text } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useTheme } from 'react-native-paper'
+import { Dimensions, StyleSheet } from 'react-native'
+import { useTheme, Button as PaperButton, Text } from 'react-native-paper'
 
 const width = Dimensions.get('screen').width
 
@@ -9,15 +8,21 @@ interface IButtonProps {
   text: string
   onPress(): void
   big?: boolean
+  loading?: boolean
 }
 
-export default function Button({ text, onPress, big }: IButtonProps) {
+export default function Button({
+  text,
+  onPress,
+  big,
+  loading = false,
+}: IButtonProps) {
   const { colors } = useTheme()
 
   return (
-    <TouchableOpacity
+    <PaperButton
+      loading={loading}
       onPress={onPress}
-      testID={big ? `${text}BigButton` : text + 'Button'}
       style={[
         big ? styles.bigButton : styles.button,
         { backgroundColor: colors.primary },
@@ -25,23 +30,23 @@ export default function Button({ text, onPress, big }: IButtonProps) {
       <Text style={[styles.buttonText, { color: colors.secondary }]}>
         {text}
       </Text>
-    </TouchableOpacity>
+    </PaperButton>
   )
 }
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 20,
+    paddingVertical: 12,
     width: width / 1.5,
     marginVertical: 10,
-    borderRadius: 5,
+    borderRadius: 4,
   },
 
   bigButton: {
-    paddingVertical: 25,
+    paddingVertical: 12,
     width: width / 1.25,
     marginVertical: 10,
-    borderRadius: 5,
+    borderRadius: 4,
   },
 
   buttonText: {

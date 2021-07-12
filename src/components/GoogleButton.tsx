@@ -2,10 +2,11 @@ import React from 'react'
 import { Dimensions, StyleSheet, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useTheme } from 'react-native-paper'
-import GoogleIcon from '../../../../assets/googleIcon.svg'
+
+import { GoogleIcon } from '../utils/icons'
 
 interface IGoogleButtonProps {
-  onPress(): void
+  onPress: () => void
 }
 
 const width = Dimensions.get('screen').width
@@ -40,9 +41,10 @@ const styles = StyleSheet.create({
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: 8,
     marginVertical: 20,
     width: width / 1.25,
     justifyContent: 'space-evenly',
+    borderRadius: 4,
   },
 })

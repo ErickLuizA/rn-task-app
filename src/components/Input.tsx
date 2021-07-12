@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     width: width / 1.25,
     marginVertical: 10,
     color: 'red',
+    borderRadius: 4,
   },
   error: {
     color: '#f00',

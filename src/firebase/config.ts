@@ -24,4 +24,4 @@ try {
 const firestore = firebase.firestore()
 const auth = firebase.auth()
 
-export { firestore, auth, firebase }
+export { firestore, auth }

@@ -1,151 +1,146 @@
-import React from 'react'
-import { Text, StyleSheet, Dimensions, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import Container from '../../../components/Container'
+import React, { useState } from 'react'
+import { View, KeyboardAvoidingView, Platform } from 'react-native'
+import { Divider, Title, useTheme, Text, Snackbar } from 'react-native-paper'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
-import { Divider, Title, useTheme } from 'react-native-paper'
-import useSubmit from './useSubmit'
-import handleGoogleLogin from '../common/handleGoogleLogin'
-import GoogleButton from '../common/GoogleButton'
+import * as Google from 'expo-auth-session/providers/google'
+
+import { useReduxDispatch, useReduxSelector } from '../../../redux/store'
+import {
+  dismissGoogleError,
+  loginWithEmail,
+  loginWithGoogle,
+} from '../../../redux/slices/authSlice'
+
+import Container from '../../../components/Container'
+import GoogleButton from '../../../components/GoogleButton'
 import Button from '../../../components/Button'
 import Input from '../../../components/Input'
 
-const width = Dimensions.get('screen').width
+import styles from './styles'
 
 export default function Login() {
   const { colors } = useTheme()
-  const navigation = useNavigation()
 
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [error, setError] = React.useState({
+  const { navigate } = useNavigation()
+
+  const dispatch = useReduxDispatch()
+
+  const { loading, loginError, googleError } = useReduxSelector(
+    state => state.auth
+  )
+
+  const [, , promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: process.env.WEB_CLIENT_ID,
+  })
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState({
     emailError: '',
     passwordError: '',
   })
 
-  function handleNavigation() {
-    navigation.navigate('Register')
+  function handleSubmit() {
+    setError({
+      emailError: '',
+      passwordError: '',
+    })
+
+    if (email.length === 0) {
+      return setError({
+        emailError: 'You need to fill this field',
+        passwordError: '',
+      })
+    }
+
+    if (password.length === 0) {
+      return setError({
+        emailError: '',
+        passwordError: 'You need to fill this field',
+      })
+    }
+
+    dispatch(loginWithEmail(email, password))
   }
 
-  function useForm() {
-    useSubmit({ email, password, setError })
-  }
+  async function handleGoogleLogin() {
+    const result = await promptAsync()
 
-  function handleForgotPass() {
-    navigation.navigate('Forgot')
+    if (result?.type == 'success') {
+      const { id_token } = result.params
+
+      dispatch(loginWithGoogle(id_token))
+    }
   }
 
   return (
-    <Container>
-      <Title
-        style={[styles.title, { color: colors.secondary }]}
-        testID="loginTitle">
-        WELCOME BACK
-      </Title>
-      <GoogleButton onPress={handleGoogleLogin} />
-      <View style={styles.row}>
-        <Divider style={styles.divider} />
-        <Text style={[{ color: colors.text }, styles.or]}>or</Text>
-        <Divider style={styles.divider} />
-      </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <ScrollView>
+        <Container>
+          <Title
+            style={[styles.title, { color: colors.secondary }]}
+            testID="loginTitle">
+            WELCOME BACK
+          </Title>
 
-      <Input
-        input={email}
-        inputName="email"
-        error={error.emailError}
-        setState={setEmail}
-      />
-      <Input
-        input={password}
-        inputName="password"
-        error={error.passwordError}
-        setState={setPassword}
-      />
+          <GoogleButton onPress={handleGoogleLogin} />
 
-      <TouchableOpacity onPress={handleForgotPass} testID="forgotButton">
-        <Text style={[styles.forgot, { color: colors.secondary }]}>
-          Forgot your password?
-        </Text>
-      </TouchableOpacity>
-      <Button onPress={useForm} text="LOGIN" big />
-      <View style={styles.row}>
-        <Text style={[styles.text, { color: colors.text }]}>
-          Don&apos;t have a account?
-        </Text>
-        <TouchableOpacity onPress={handleNavigation} testID="sendToRegister">
-          <Text style={[{ color: colors.secondary }, styles.register]}>
-            {' '}
-            Register
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </Container>
+          <View style={styles.row}>
+            <Divider style={styles.divider} />
+            <Text style={[{ color: colors.text }, styles.or]}>or</Text>
+            <Divider style={styles.divider} />
+          </View>
+
+          <Input
+            input={email}
+            inputName="email"
+            error={error.emailError}
+            setState={setEmail}
+          />
+
+          <Input
+            input={password}
+            inputName="password"
+            error={error.passwordError}
+            setState={setPassword}
+          />
+
+          {loginError ? <Text style={styles.error}>{loginError}</Text> : null}
+
+          <TouchableOpacity
+            onPress={() => navigate('Forgot')}
+            testID="forgotButton">
+            <Text style={[styles.forgot, { color: colors.secondary }]}>
+              Forgot your password?
+            </Text>
+          </TouchableOpacity>
+
+          <Button onPress={handleSubmit} text="LOGIN" big loading={loading} />
+
+          <View style={styles.row}>
+            <Text style={[styles.text, { color: colors.text }]}>
+              Don&apos;t have a account?{' '}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => navigate('Register')}
+              testID="sendToRegister">
+              <Text style={[{ color: colors.secondary }, styles.register]}>
+                Register
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Snackbar
+            visible={Boolean(googleError)}
+            onDismiss={() => dispatch(dismissGoogleError())}>
+            {googleError}
+          </Snackbar>
+        </Container>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
-
-const styles = StyleSheet.create({
-  forgot: {
-    fontFamily: 'Roboto-MediumItalic',
-    marginVertical: 15,
-  },
-  title: {
-    fontFamily: 'Roboto-Light',
-    marginBottom: 40,
-    fontSize: 26,
-    width: width / 1.5,
-    marginRight: 'auto',
-    paddingHorizontal: 20,
-  },
-
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-
-  divider: {
-    marginTop: 10,
-    marginBottom: 10,
-    height: 2,
-    width: width / 3,
-    marginHorizontal: 10,
-  },
-
-  or: {
-    fontFamily: 'Roboto-Light',
-    fontSize: 18,
-    marginBottom: 10,
-  },
-
-  input: {
-    width: width / 1.25,
-    backgroundColor: '#fafafa',
-    marginVertical: 10,
-  },
-
-  button: {
-    paddingVertical: 20,
-    width: width / 1.25,
-    marginTop: 10,
-    borderRadius: 5,
-  },
-
-  buttonText: {
-    textAlign: 'center',
-    fontFamily: 'Roboto-Light',
-    fontSize: 18,
-  },
-
-  text: {
-    fontFamily: 'Roboto-Regular',
-  },
-
-  register: {
-    fontFamily: 'Roboto-Italic',
-  },
-  error: {
-    color: '#f00',
-    textAlign: 'left',
-    width: width / 1.25,
-  },
-})

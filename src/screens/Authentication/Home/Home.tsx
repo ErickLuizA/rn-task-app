@@ -1,61 +1,40 @@
 import React from 'react'
-import { Text, Dimensions, StyleSheet } from 'react-native'
-import { useTheme } from 'react-native-paper'
+import { Dimensions } from 'react-native'
+import { useTheme, Text } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
+
+import { PhonemanIcon, PhonemanIconDark } from '../../../utils/icons'
+
 import Container from '../../../components/Container'
-import {
-  NavigationProp,
-  ParamListBase,
-  useNavigation,
-} from '@react-navigation/native'
 import Button from '../../../components/Button'
 
-const width = Dimensions.get('screen').width
-const height = Dimensions.get('screen').height
+const WIDTH = Dimensions.get('screen').width
+
+import styles from './styles'
 
 export default function Home() {
-  const { colors } = useTheme()
-  const navigation = useNavigation<NavigationProp<ParamListBase>>()
+  const { colors, dark } = useTheme()
 
-  function handleNavigation(props: string) {
-    navigation.navigate(props)
-  }
+  const { navigate } = useNavigation()
 
   return (
     <Container>
+      {dark ? (
+        <PhonemanIconDark width={WIDTH / 2} height={WIDTH / 2} />
+      ) : (
+        <PhonemanIcon width={WIDTH / 2} height={WIDTH / 2} />
+      )}
+
       <Text style={[{ color: colors.text }, styles.text]} testID="text">
-        {' '}
-        Now you know
+        Now you know{' '}
         <Text style={[{ color: colors.secondary }, styles.italicText]}>
-          {' '}
-          whtodo{' '}
+          whtodo
         </Text>
       </Text>
-      <Button onPress={() => handleNavigation('Login')} text="LOGIN" />
-      <Button onPress={() => handleNavigation('Register')} text="REGISTER" />
+
+      <Button onPress={() => navigate('Login')} text="LOGIN" />
+
+      <Button onPress={() => navigate('Register')} text="REGISTER" />
     </Container>
   )
 }
-
-const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 20,
-    width: width / 1.5,
-    marginVertical: 10,
-    borderRadius: 5,
-  },
-
-  buttonText: {
-    fontFamily: 'Roboto-Medium',
-    textAlign: 'center',
-  },
-
-  text: {
-    fontSize: 24,
-    marginVertical: height / 16,
-    fontFamily: 'Roboto-Regular',
-  },
-
-  italicText: {
-    fontFamily: 'Roboto-LightItalic',
-  },
-})

@@ -38,7 +38,10 @@ export default function AuthRoutes() {
       <Screen
         name="Forgot"
         component={Forgot}
-        options={{ headerShown: false }}
+        options={{
+          headerTransparent: true,
+          title: null,
+        }}
       />
     </Navigator>
   )
