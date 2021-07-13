@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react'
 import { FlatList, Text, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
-import { ParamListBase, useNavigation } from '@react-navigation/native'
-import { DrawerNavigationProp } from '@react-navigation/drawer'
+import { useNavigation } from '@react-navigation/native'
 
 import { useReduxDispatch, useReduxSelector } from '../../../redux/store'
 import { getTasks } from '../../../redux/slices/tasksSlice'
 
-import UpperProfile from '../../../components/UpperProfile'
 import Progress from '../../../components/Progress'
 import TaskCard from '../../../components/TaskCard'
 import NotFound from '../../../components/NotFound'
@@ -22,8 +20,7 @@ export default function Dashboard() {
   const { todayTasks } = useReduxSelector(state => state.tasks)
   const { user } = useReduxSelector(state => state.auth)
 
-  const { openDrawer, navigate } =
-    useNavigation<DrawerNavigationProp<ParamListBase>>()
+  const { navigate } = useNavigation()
 
   useEffect(() => {
     dispatch(getTasks(user.uid))
@@ -31,7 +28,6 @@ export default function Dashboard() {
 
   return (
     <>
-      <UpperProfile onPress={openDrawer} />
       <View style={styles.container}>
         <Progress progressType="Daily" tasks={todayTasks} />
 

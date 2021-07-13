@@ -2,20 +2,13 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Avatar, useTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { MaterialIcons } from '@expo/vector-icons'
 import { useReduxSelector } from '../redux/store'
 
 interface IUpperProfileProps {
-  onPress: () => void
-  account?: boolean
-  openPhoto?: () => void
+  openPhoto: () => void
 }
 
-export default function UpperProfile({
-  onPress,
-  account,
-  openPhoto,
-}: IUpperProfileProps) {
+export default function UpperProfile({ openPhoto }: IUpperProfileProps) {
   const { user } = useReduxSelector(state => state.auth)
 
   const { colors } = useTheme()
@@ -23,21 +16,8 @@ export default function UpperProfile({
   return (
     <SafeAreaView
       style={[{ backgroundColor: colors.profileBackground }, styles.container]}>
-      {account ? (
-        <TouchableOpacity onPress={onPress}>
-          <MaterialIcons
-            name="keyboard-backspace"
-            size={40}
-            color={colors.secondary}
-          />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity onPress={onPress}>
-          <MaterialIcons name="subject" size={40} color={colors.secondary} />
-        </TouchableOpacity>
-      )}
       <View style={styles.avatarContainer}>
-        <TouchableOpacity onPress={account ? openPhoto : null}>
+        <TouchableOpacity onPress={openPhoto}>
           {user.photoURL ? (
             <Avatar.Image
               source={{

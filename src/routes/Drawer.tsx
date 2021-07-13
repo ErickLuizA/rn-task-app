@@ -7,7 +7,7 @@ import { useReduxSelector } from '../redux/store'
 
 import Dashboard from '../screens/Application/Dashboard'
 // import Settings from '../screens/Application/Settings'
-// import AddTask from '../screens/Application/AddTask'
+import AddTask from '../screens/Application/AddTask'
 // import Starred from '../screens/Application/Starred'
 // import Done from '../screens/Application/Done'
 // import AllTask from '../screens/Application/AllTask'
@@ -44,6 +44,9 @@ export default function Drawer() {
             ) : (
               <Avatar.Icon icon="account" />
             ),
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.profileBackground },
+          headerTintColor: colors.secondary,
         }}
       />
       {/* <Screen
@@ -91,23 +94,26 @@ export default function Drawer() {
             <Avatar.Icon icon="file-check" color={colors.secondary} />
           ),
         }}
-      />
+      /> */}
       <Screen
         name="AddTask"
         component={AddTask}
         options={{
           drawerLabel: () => (
             <Text testID="addTask" style={{ color: colors.secondary }}>
-              {' '}
-              Add Task{' '}
+              Add Task
             </Text>
           ),
           drawerIcon: () => (
             <Avatar.Icon icon="plus" color={colors.secondary} />
           ),
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.profileBackground },
+          headerTintColor: colors.secondary,
+          headerTitle: 'Add Task',
         }}
       />
-      <Screen
+      {/* <Screen
         name="Settings"
         component={Settings}
         options={{
