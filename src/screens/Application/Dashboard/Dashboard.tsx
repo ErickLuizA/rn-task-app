@@ -1,85 +1,61 @@
-import React, { useContext } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
-import Container from '../../../components/Container'
+import React, { useEffect } from 'react'
+import { FlatList, Text, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
-import UpperProfile from '../../../components/UpperProfile'
 import { ParamListBase, useNavigation } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
+
+import { useReduxDispatch, useReduxSelector } from '../../../redux/store'
+import { getTasks } from '../../../redux/slices/tasksSlice'
+
+import UpperProfile from '../../../components/UpperProfile'
 import Progress from '../../../components/Progress'
 import TaskCard from '../../../components/TaskCard'
-import { TaskContext } from '../../../context/TaskContext'
-import { ScrollView } from 'react-native-gesture-handler'
 import NotFound from '../../../components/NotFound'
-import AppBar from '../../../components/AppBar'
-import useOpenBar from '../../../hooks/useOpenBar'
+
+import styles from './styles'
 
 export default function Dashboard() {
-  const { tasks } = useContext(TaskContext)
+  const dispatch = useReduxDispatch()
+
   const { colors } = useTheme()
-  const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>()
 
-  const { open, closeBar, openAppBar } = useOpenBar()
+  const { todayTasks } = useReduxSelector(state => state.tasks)
+  const { user } = useReduxSelector(state => state.auth)
 
-  function openDrawer() {
-    navigation.openDrawer()
-  }
+  const { openDrawer, navigate } =
+    useNavigation<DrawerNavigationProp<ParamListBase>>()
 
-  const checkTodayTask = () =>
-    tasks.find(task => task.Date.getDate() === new Date().getDate())
-
-  const getTodayTasks = () =>
-    tasks.filter(t => t.Date.getDate() === new Date().getDate())
+  useEffect(() => {
+    dispatch(getTasks(user.uid))
+  }, [])
 
   return (
     <>
-      {Boolean(open) && (
-        <AppBar location="Dashboard" task={open} toggle={closeBar} />
-      )}
-      <UpperProfile openDrawer={openDrawer} />
+      <UpperProfile onPress={openDrawer} />
+      <View style={styles.container}>
+        <Progress progressType="Daily" tasks={todayTasks} />
 
-      <Container>
-        <View style={styles.flex}>
-          <Progress progressType="Daily" tasks={getTodayTasks()} />
-          <Text style={[{ color: colors.secondary }, styles.text]}>
-            {' '}
-            Daily Tasks
-          </Text>
-          <ScrollView>
-            {checkTodayTask() ? (
-              tasks.map(task => {
-                if (task.Date.getDate() === new Date().getDate()) {
-                  return (
-                    <TaskCard
-                      openAppBar={openAppBar}
-                      taskType="Daily"
-                      data={task}
-                      key={task.Name}
-                    />
-                  )
-                }
-              })
-            ) : (
-              <NotFound
-                label="Add a task"
-                onPress={() => navigation.navigate('AddTask')}
+        <Text style={[{ color: colors.secondary }, styles.text]}>
+          Daily Tasks
+        </Text>
+
+        {todayTasks.length > 0 ? (
+          <FlatList
+            ItemSeparatorComponent={() => (
+              <View
+                style={{
+                  height: 10,
+                }}
               />
             )}
-          </ScrollView>
-        </View>
-      </Container>
+            data={todayTasks}
+            keyExtractor={(item, index) => item.name + index}
+            renderItem={({ item }) => <TaskCard taskType="Daily" data={item} />}
+          />
+        ) : (
+          <NotFound label="Add a task" onPress={() => navigate('AddTask')} />
+        )}
+      </View>
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 26,
-    alignSelf: 'flex-start',
-    fontFamily: 'Roboto-Medium',
-
-    marginVertical: 20,
-    marginLeft: 10,
-  },
-
-  flex: { flex: 1 },
-})

@@ -1,60 +1,46 @@
 import React from 'react'
-import { Dimensions, StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useTheme } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import { ITask } from '../context/TaskContext'
+import { MaterialIcons } from '@expo/vector-icons'
 
-const width = Dimensions.get('screen').width
+import Task from '../models/Task'
 
 interface ITaskCardProps {
   taskType: string
-  data: ITask
-  openAppBar: (arg: string) => void
+  data: Task
 }
 
-export default function TaskCard({
-  taskType,
-  data,
-  openAppBar,
-}: ITaskCardProps) {
+export default function TaskCard({ taskType, data }: ITaskCardProps) {
   const { colors } = useTheme()
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => openAppBar(data.Name)}
-      testID="cardContainer">
+    <TouchableOpacity>
       {data && (
         <View style={[styles.card, { backgroundColor: colors.primary }]}>
           <Text style={[{ color: colors.text }, styles.title]}>
-            {' '}
-            {data?.Name}{' '}
+            {data?.name}
           </Text>
           <Text style={[{ color: colors.secondary }, styles.category]}>
-            {' '}
-            {data?.Category}{' '}
+            {data?.category}
           </Text>
           <View style={styles.row}>
             {taskType === 'Daily' ? (
               <Text style={[{ color: colors.secondary }, styles.hour]}>
-                {' '}
-                {data.Date.toLocaleTimeString().slice(0, 5)}{' '}
+                {data.date.toLocaleTimeString().slice(0, 5)}
               </Text>
             ) : (
               <Text style={[{ color: colors.secondary }, styles.date]}>
-                {' '}
-                {data.Date.toLocaleDateString()}{' '}
+                {data.date.toLocaleDateString()}{' '}
               </Text>
             )}
-            <Icon
+            <MaterialIcons
               name={
-                data.Date.toLocaleTimeString() > '18'
+                data.date.toLocaleTimeString() > '18'
                   ? 'brightness-3'
                   : 'brightness-7'
               }
               color={colors.secondary}
-              style={styles.icon}
               size={40}
             />
           </View>
@@ -65,32 +51,20 @@ export default function TaskCard({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 5,
-  },
-
   card: {
-    width: width / 1.3,
-    paddingVertical: 10,
+    width: '100%',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 4,
   },
 
   title: {
-    fontSize: 18,
-    fontFamily: 'Roboto-Regular',
-    textAlign: 'center',
+    fontSize: 20,
+    fontFamily: 'Roboto-BoldItalic',
   },
 
   category: {
     fontSize: 18,
-    fontFamily: 'Roboto-Light',
-  },
-
-  icon: {
-    alignSelf: 'flex-end',
+    fontFamily: 'Roboto-Regular',
   },
 
   hour: {

@@ -66,6 +66,9 @@ const authSlice = createSlice({
     isLogged: (state, action: PayloadAction<IsLoggedPayload>) => {
       state.user = action.payload.user
     },
+    isNotLogged: state => {
+      state.user = null
+    },
   },
 })
 
@@ -107,6 +110,7 @@ export const {
   registerWithEmailStart,
   dismissGoogleError,
   isLogged,
+  isNotLogged,
 } = authSlice.actions
 
 export default authSlice.reducer

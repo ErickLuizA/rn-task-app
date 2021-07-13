@@ -1,21 +1,22 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Text } from 'react-native'
 import { Avatar, useTheme } from 'react-native-paper'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 
-import { AuthContext } from '../context/AuthContext'
+import { useReduxSelector } from '../redux/store'
 
 import Dashboard from '../screens/Application/Dashboard'
-import Settings from '../screens/Application/Settings'
-import AddTask from '../screens/Application/AddTask'
-import Starred from '../screens/Application/Starred'
-import Done from '../screens/Application/Done'
-import AllTask from '../screens/Application/AllTask'
+// import Settings from '../screens/Application/Settings'
+// import AddTask from '../screens/Application/AddTask'
+// import Starred from '../screens/Application/Starred'
+// import Done from '../screens/Application/Done'
+// import AllTask from '../screens/Application/AllTask'
 
 const { Screen, Navigator } = createDrawerNavigator()
 
 export default function Drawer() {
-  const { user } = useContext(AuthContext)
+  const { user } = useReduxSelector(state => state.auth)
+
   const { colors } = useTheme()
 
   return (
@@ -45,7 +46,7 @@ export default function Drawer() {
             ),
         }}
       />
-      <Screen
+      {/* <Screen
         name="Starred"
         component={Starred}
         options={{
@@ -120,7 +121,7 @@ export default function Drawer() {
             <Avatar.Icon icon="saw-blade" color={colors.secondary} />
           ),
         }}
-      />
+      /> */}
     </Navigator>
   )
 }

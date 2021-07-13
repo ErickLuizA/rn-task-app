@@ -1,76 +1,59 @@
-import React, { useContext } from 'react'
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  StatusBar,
-  TouchableOpacity,
-} from 'react-native'
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Avatar, useTheme } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import { AuthContext } from '../context/AuthContext'
-
-const width = Dimensions.get('screen').width
+import { MaterialIcons } from '@expo/vector-icons'
+import { useReduxSelector } from '../redux/store'
 
 interface IUpperProfileProps {
-  openDrawer: () => void
+  onPress: () => void
   account?: boolean
   openPhoto?: () => void
 }
 
 export default function UpperProfile({
-  openDrawer,
+  onPress,
   account,
   openPhoto,
 }: IUpperProfileProps) {
-  const { user } = useContext(AuthContext)
+  const { user } = useReduxSelector(state => state.auth)
+
   const { colors } = useTheme()
 
   return (
     <SafeAreaView
-      testID="profileContainer"
       style={[{ backgroundColor: colors.profileBackground }, styles.container]}>
-      {!account ? (
-        <TouchableOpacity
-          testID="menu"
-          style={styles.menu}
-          onPress={openDrawer}>
-          <Icon name="subject" size={60} color={colors.secondary} />
+      {account ? (
+        <TouchableOpacity onPress={onPress}>
+          <MaterialIcons
+            name="keyboard-backspace"
+            size={40}
+            color={colors.secondary}
+          />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={openDrawer}>
-          <Icon name="keyboard-backspace" size={60} color={colors.secondary} />
+        <TouchableOpacity onPress={onPress}>
+          <MaterialIcons name="subject" size={40} color={colors.secondary} />
         </TouchableOpacity>
       )}
       <View style={styles.avatarContainer}>
-        {account ? (
-          <TouchableOpacity onPress={openPhoto}>
-            {user?.photoURL ? (
-              <Avatar.Image
-                source={{ uri: user?.photoURL }}
-                size={80}
-                style={styles.avatar}
-              />
-            ) : (
-              <Avatar.Icon icon="account" size={80} style={styles.avatar} />
-            )}
-          </TouchableOpacity>
-        ) : user?.photoURL ? (
-          <Avatar.Image
-            source={{ uri: user?.photoURL }}
-            size={80}
-            style={styles.avatar}
-          />
-        ) : (
-          <Avatar.Icon icon="account" size={80} style={styles.avatar} />
-        )}
+        <TouchableOpacity onPress={account ? openPhoto : null}>
+          {user.photoURL ? (
+            <Avatar.Image
+              source={{
+                uri: user.photoURL,
+              }}
+              size={80}
+            />
+          ) : (
+            <Avatar.Icon icon="account" size={80} />
+          )}
+        </TouchableOpacity>
 
-        <Text style={[styles.text, { color: colors.text }]} testID="hello">
+        <Text style={[styles.text, { color: colors.text }]}>
           Hello,{' '}
           <Text style={[styles.text, { color: colors.secondary }]}>
-            {user?.displayName}
+            {user.displayName}
           </Text>
         </Text>
       </View>
@@ -80,22 +63,13 @@ export default function UpperProfile({
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: StatusBar.currentHeight,
     paddingHorizontal: 20,
-  },
-
-  menu: {
-    alignSelf: 'flex-start',
-    width: width / 1.1,
+    borderRadius: 8,
   },
 
   avatarContainer: {
-    alignSelf: 'center',
     paddingTop: 20,
-  },
-
-  avatar: {
-    alignSelf: 'center',
+    alignItems: 'center',
   },
 
   text: {

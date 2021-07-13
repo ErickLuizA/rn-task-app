@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 
   bigButton: {
     paddingVertical: 12,
-    width: width / 1.25,
+    width: '100%',
     marginVertical: 10,
     borderRadius: 4,
   },

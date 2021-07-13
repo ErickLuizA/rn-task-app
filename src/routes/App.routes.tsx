@@ -2,19 +2,11 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import Drawer from './Drawer'
-import Task from '../screens/Application/Task'
-import Account from '../screens/Application/Account'
-import PhotoModal from '../screens/Application/PhotoModal'
+// import Task from '../screens/Application/Task'
+// import Account from '../screens/Application/Account'
+// import PhotoModal from '../screens/Application/PhotoModal'
 
-export type AppRoutesParamList = {
-  Drawer: { result: string }
-  Task: { action: string; task: string }
-  AddTask: { result: string }
-  Account: Record<string, unknown>
-  PhotoModal: Record<string, unknown>
-}
-
-const { Screen, Navigator } = createStackNavigator<AppRoutesParamList>()
+const { Screen, Navigator } = createStackNavigator()
 
 export default function AppRoutes() {
   return (
@@ -43,7 +35,7 @@ export default function AppRoutes() {
           headerShown: false,
         }}
       />
-      <Screen name="Task" component={Task} />
+      {/* <Screen name="Task" component={Task} />
       <Screen
         name="Account"
         component={Account}
@@ -53,7 +45,7 @@ export default function AppRoutes() {
         name="PhotoModal"
         component={PhotoModal}
         options={{ headerShown: false }}
-      />
+      /> */}
     </Navigator>
   )
 }

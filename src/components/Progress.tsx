@@ -1,32 +1,31 @@
-import * as React from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
-import { useTheme } from 'react-native-paper'
-import { Text } from 'react-native'
-import { ITask } from '../context/TaskContext'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { useTheme, Text } from 'react-native-paper'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
+
+import Task from '../models/Task'
 
 interface IProgressProps {
   progressType: string
-  tasks: ITask[]
+  tasks: Task[]
 }
-
-const width = Dimensions.get('screen').width
 
 export default function Progress({ progressType, tasks }: IProgressProps) {
   const { colors } = useTheme()
 
   const totalTasks = tasks.length
 
-  const doneTasks = tasks.filter(task => task.Done === true)
+  const doneTasks = tasks.filter(task => task.done === true)
 
-  // function getProgress(): number {
-  //   const progress = (doneTasks.length * 100) / totalTasks
+  function getProgress(): number {
+    const progress = (doneTasks.length * 100) / totalTasks
 
-  //   if (doneTasks.length === 0 && totalTasks === 0) {
-  //     return 0
-  //   }
+    if (doneTasks.length === 0 && totalTasks === 0) {
+      return 0
+    }
 
-  //   return progress
-  // }
+    return progress
+  }
 
   return (
     <View
@@ -34,11 +33,10 @@ export default function Progress({ progressType, tasks }: IProgressProps) {
         progressType === 'Daily'
           ? styles.container
           : styles.notDashboardContainer
-      }
-      testID="progressContainer">
-      {/* <AnimatedCircularProgress
-        size={120}
-        width={15}
+      }>
+      <AnimatedCircularProgress
+        size={100}
+        width={16}
         fill={getProgress()}
         rotation={360}
         tintColor={colors.secondary}
@@ -46,12 +44,12 @@ export default function Progress({ progressType, tasks }: IProgressProps) {
         {fill => {
           return (
             <Text style={[styles.progressText, { color: colors.secondary }]}>
-              {' '}
-              {fill}%{' '}
+              {fill}%
             </Text>
           )
         }}
-      </AnimatedCircularProgress> */}
+      </AnimatedCircularProgress>
+      <View style={{ width: 20 }} />
       <View>
         <Text style={[styles.text, { color: colors.grayText }]}>
           {' '}
@@ -69,21 +67,18 @@ export default function Progress({ progressType, tasks }: IProgressProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: width / 1.2,
     alignItems: 'center',
+    marginTop: 10,
   },
 
   notDashboardContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: width / 1.2,
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 20,
   },
 
   progressText: {
-    fontSize: 26,
+    fontSize: 24,
     fontFamily: 'Roboto-MediumItalic',
   },
 
