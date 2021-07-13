@@ -7,14 +7,17 @@ import authSagas from './sagas/authSagas'
 
 import authReducer from './slices/authSlice'
 import themeReducer from './slices/themeSlice'
+import tasksReducer from './slices/tasksSlice'
+import tasksSagas from './sagas/tasksSaga'
 
 const rootReducer = combineReducers({
   auth: authReducer,
   theme: themeReducer,
+  tasks: tasksReducer,
 })
 
 function* rootSaga() {
-  yield all([call(authSagas)])
+  yield all([call(authSagas), call(tasksSagas)])
 }
 
 const sagaMiddleware = createSagaMiddleware()
