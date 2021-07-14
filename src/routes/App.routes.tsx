@@ -1,14 +1,17 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
+import { useTheme } from 'react-native-paper'
 
 import Drawer from './Drawer'
-// import Task from '../screens/Application/Task'
+import TaskDetail from '../screens/Application/TaskDetail'
 // import Account from '../screens/Application/Account'
 // import PhotoModal from '../screens/Application/PhotoModal'
 
 const { Screen, Navigator } = createStackNavigator()
 
 export default function AppRoutes() {
+  const { colors } = useTheme()
+
   return (
     <Navigator
       initialRouteName="Drawer"
@@ -35,8 +38,16 @@ export default function AppRoutes() {
           headerShown: false,
         }}
       />
-      {/* <Screen name="Task" component={Task} />
       <Screen
+        name="TaskDetail"
+        component={TaskDetail}
+        options={{
+          title: 'Task',
+          headerStyle: { backgroundColor: colors.profileBackground },
+          headerTintColor: colors.secondary,
+        }}
+      />
+      {/* <Screen
         name="Account"
         component={Account}
         options={{ headerShown: false }}

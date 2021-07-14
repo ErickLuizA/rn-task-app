@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useTheme } from 'react-native-paper'
 import { MaterialIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 import Task from '../models/Task'
 
@@ -14,8 +15,18 @@ interface ITaskCardProps {
 export default function TaskCard({ taskType, data }: ITaskCardProps) {
   const { colors } = useTheme()
 
+  const { navigate } = useNavigation()
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() =>
+        navigate('TaskDetail', {
+          task: {
+            ...data,
+            date: data.date.toDateString(),
+          },
+        })
+      }>
       {data && (
         <View style={[styles.card, { backgroundColor: colors.primary }]}>
           <Text style={[{ color: colors.text }, styles.title]}>
