@@ -18,7 +18,7 @@ export default function Progress({ progressType, tasks }: IProgressProps) {
   const doneTasks = tasks.filter(task => task.done === true)
 
   function getProgress(): number {
-    const progress = (doneTasks.length * 100) / totalTasks
+    const progress = Math.floor((doneTasks.length * 100) / totalTasks)
 
     if (doneTasks.length === 0 && totalTasks === 0) {
       return 0

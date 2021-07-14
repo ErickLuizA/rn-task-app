@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { auth } from '../firebase/config'
 import { isLogged, isNotLogged } from '../redux/slices/authSlice'
+import { getTasks } from '../redux/slices/tasksSlice'
 import { useReduxDispatch, useReduxSelector } from '../redux/store'
 
 import AppRoutes from './App.routes'
@@ -15,6 +16,8 @@ export default function Screens() {
     auth.onAuthStateChanged(userState => {
       if (userState) {
         dispatch(isLogged({ user: userState }))
+
+        dispatch(getTasks())
       } else {
         dispatch(isNotLogged())
       }

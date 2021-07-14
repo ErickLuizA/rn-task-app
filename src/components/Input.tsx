@@ -30,7 +30,7 @@ export default function Input({
         theme={{
           colors: {
             placeholder: colors.secondary,
-            text: colors.grayText,
+            text: colors.text,
           },
         }}
         textContentType={
@@ -52,22 +52,19 @@ export default function Input({
           },
         ]}
       />
-      {Boolean(error) && (
-        <Text testID="nameError" style={styles.error}>
-          {error}
-        </Text>
-      )}
+      {Boolean(error) && <Text style={styles.error}>{error}</Text>}
     </>
   )
 }
 
 const styles = StyleSheet.create({
   input: {
-    width: width / 1.25,
+    width: '100%',
     marginVertical: 10,
     color: 'red',
     borderRadius: 4,
   },
+
   error: {
     color: '#f00',
     textAlign: 'left',
