@@ -1,13 +1,27 @@
 import firebase from 'firebase'
-import { all, call, put, takeLatest } from 'redux-saga/effects'
-import { getTasks, getTasksError, getTasksFinish } from '../slices/tasksSlice'
-import { PayloadAction } from '@reduxjs/toolkit'
+import { all, call, put, takeLatest, select } from 'redux-saga/effects'
+import {
+  addTask,
+  addTaskError,
+  addTaskFinish,
+  getTasks,
+  getTasksError,
+  getTasksFinish,
+} from '../slices/tasksSlice'
 import { firestore } from '../../firebase/config'
+import { RootState } from '../store'
+import { PayloadAction } from '@reduxjs/toolkit'
+import Task from '../../models/Task'
 
-function* getAllTasks(action: PayloadAction<{ userId: string }>) {
-  const { userId } = action.payload
+const getAuthState = (state: RootState) => state.auth
 
-  const tasksRef = firestore.collection('Users').doc(userId).collection('Tasks')
+function* getAllTasks() {
+  const { user }: { user: firebase.User } = yield select(getAuthState)
+
+  const tasksRef = firestore
+    .collection('Users')
+    .doc(user.uid)
+    .collection('Tasks')
 
   try {
     const taskDocs: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData> =
@@ -25,7 +39,7 @@ function* getAllTasks(action: PayloadAction<{ userId: string }>) {
 
     yield put(
       getTasksFinish({
-        allTaks: taskArray,
+        allTasks: taskArray,
       })
     )
   } catch (error) {
@@ -39,10 +53,43 @@ function* getAllTasks(action: PayloadAction<{ userId: string }>) {
   }
 }
 
+function* addOneTask(action: PayloadAction<{ task: Task }>) {
+  const { user }: { user: firebase.User } = yield select(getAuthState)
+
+  const { task } = action.payload
+
+  const tasksRef = firestore
+    .collection('Users')
+    .doc(user.uid)
+    .collection('Tasks')
+
+  try {
+    yield call([tasksRef, tasksRef.add], task)
+
+    yield put(addTaskFinish())
+  } catch (error) {
+    const taskError = 'Error while trying to add task'
+
+    yield put(
+      addTaskError({
+        error: taskError,
+      })
+    )
+  }
+}
+
 function* onGetTasks() {
   yield takeLatest(getTasks.type, getAllTasks)
 }
 
+function* onAddTask() {
+  yield takeLatest(addTask.type, addOneTask)
+}
+
+function* onAddTaskFinish() {
+  yield takeLatest(addTaskFinish.type, getAllTasks)
+}
+
 export default function* tasksSagas() {
-  yield all([call(onGetTasks)])
+  yield all([call(onGetTasks), call(onAddTask), call(onAddTaskFinish)])
 }

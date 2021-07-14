@@ -4,11 +4,13 @@ import Task from '../../models/Task'
 type TasksState = {
   todayTasks: Task[]
   allTasks: Task[]
+  categories: string[]
   error: string
+  addTaskError: string
 }
 
 type TasksFinishPayload = {
-  allTaks: Task[]
+  allTasks: Task[]
 }
 
 type TasksErrorPayload = {
@@ -18,7 +20,9 @@ type TasksErrorPayload = {
 const initialState: TasksState = {
   todayTasks: [],
   allTasks: [],
+  categories: [],
   error: null,
+  addTaskError: null,
 }
 
 const tasksSlice = createSlice({
@@ -26,7 +30,7 @@ const tasksSlice = createSlice({
   initialState: initialState,
   reducers: {
     getTasksFinish: (state, action: PayloadAction<TasksFinishPayload>) => {
-      const { allTaks } = action.payload
+      const { allTasks } = action.payload
 
       const date = new Date()
 
@@ -36,28 +40,47 @@ const tasksSlice = createSlice({
 
       const year = date.getFullYear()
 
-      state.allTasks = allTaks
-      state.todayTasks = allTaks.filter(
+      const categories: string[] = []
+
+      allTasks.forEach(t => {
+        if (!categories.includes(t.category)) {
+          categories.push(t.category)
+        }
+      })
+
+      state.allTasks = allTasks
+      state.todayTasks = allTasks.filter(
         task =>
           task.date.getDay() === day &&
           task.date.getDate() === month &&
           task.date.getFullYear() === year
       )
+      state.categories = categories
+      state.addTaskError = null
+      state.error = null
     },
     getTasksError: (state, action: PayloadAction<TasksErrorPayload>) => {
       const { error } = action.payload
 
       state.error = error
     },
+    addTaskError: (state, action: PayloadAction<TasksErrorPayload>) => {
+      state.addTaskError = action.payload.error
+    },
   },
 })
 
-export const getTasks = createAction('GET_TASKS', (userId: string) => ({
+export const getTasks = createAction('GET_TASKS')
+
+export const addTask = createAction('ADD_TASKS', (task: Task) => ({
   payload: {
-    userId,
+    task,
   },
 }))
 
-export const { getTasksFinish, getTasksError } = tasksSlice.actions
+export const addTaskFinish = createAction('ADD_TASK_FINISH')
+
+export const { getTasksFinish, getTasksError, addTaskError } =
+  tasksSlice.actions
 
 export default tasksSlice.reducer
