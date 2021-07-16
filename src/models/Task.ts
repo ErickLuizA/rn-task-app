@@ -5,6 +5,5 @@ export default interface Task {
   content: string
   done: boolean
   starred: boolean
-  progress: boolean
   notification: boolean
 }

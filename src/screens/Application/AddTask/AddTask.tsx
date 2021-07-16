@@ -103,7 +103,6 @@ export default function AddTask() {
         notification: notificationOn,
         done: false,
         starred: false,
-        progress: false,
       })
     )
 
