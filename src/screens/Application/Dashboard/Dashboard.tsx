@@ -19,31 +19,29 @@ export default function Dashboard() {
   const { navigate } = useNavigation()
 
   return (
-    <>
-      <View style={styles.container}>
-        <Progress progressType="Daily" tasks={todayTasks} />
+    <View style={styles.container}>
+      <Progress progressType="Daily" tasks={todayTasks} />
 
-        <Text style={[{ color: colors.secondary }, styles.text]}>
-          Daily Tasks
-        </Text>
+      <Text style={[{ color: colors.secondary }, styles.text]}>
+        Daily Tasks
+      </Text>
 
-        {todayTasks.length > 0 ? (
-          <FlatList
-            ItemSeparatorComponent={() => (
-              <View
-                style={{
-                  height: 10,
-                }}
-              />
-            )}
-            data={todayTasks}
-            keyExtractor={(item, index) => item.name + index}
-            renderItem={({ item }) => <TaskCard taskType="Daily" data={item} />}
-          />
-        ) : (
-          <NotFound label="Add a task" onPress={() => navigate('AddTask')} />
-        )}
-      </View>
-    </>
+      {todayTasks.length > 0 ? (
+        <FlatList
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 10,
+              }}
+            />
+          )}
+          data={todayTasks}
+          keyExtractor={(item, index) => item.name + index}
+          renderItem={({ item }) => <TaskCard taskType="Daily" data={item} />}
+        />
+      ) : (
+        <NotFound label="Add a task" onPress={() => navigate('AddTask')} />
+      )}
+    </View>
   )
 }
