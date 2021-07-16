@@ -27,13 +27,25 @@ export default function TaskDetail() {
   useEffect(() => {
     setOptions({
       title: task.name,
-      headerRight: () => <HeaderRight />,
+      headerRight: () => (
+        <HeaderRight
+          task={{
+            ...task,
+            content: value ? value : task.content,
+          }}
+        />
+      ),
     })
-  }, [])
+  }, [value])
 
   useEffect(() => {
     addListener('beforeRemove', e => {
       if (!hasUnsavedChanges) {
+        return
+      }
+
+      // if it is returning from the save action, return
+      if (e.data.action.type === 'GO_BACK') {
         return
       }
 
@@ -52,7 +64,7 @@ export default function TaskDetail() {
         ]
       )
     })
-  }, [])
+  }, [hasUnsavedChanges])
 
   return (
     <View>
