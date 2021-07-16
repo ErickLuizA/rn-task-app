@@ -39,8 +39,8 @@ export default function Drawer() {
             </Text>
           ),
           drawerIcon: () =>
-            user?.photoURL ? (
-              <Avatar.Image source={{ uri: user?.photoURL }} />
+            user?.providerData[0]?.photoURL ? (
+              <Avatar.Image source={{ uri: user?.providerData[0].photoURL }} />
             ) : (
               <Avatar.Icon icon="account" />
             ),
