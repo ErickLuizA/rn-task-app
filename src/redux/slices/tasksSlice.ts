@@ -4,6 +4,8 @@ import Task from '../../models/Task'
 type TasksState = {
   todayTasks: Task[]
   allTasks: Task[]
+  doneTasks: Task[]
+  starredTasks: Task[]
   categories: string[]
   error: string
 }
@@ -19,6 +21,8 @@ type TasksErrorPayload = {
 const initialState: TasksState = {
   todayTasks: [],
   allTasks: [],
+  doneTasks: [],
+  starredTasks: [],
   categories: [],
   error: null,
 }
@@ -53,6 +57,8 @@ const tasksSlice = createSlice({
           task.date.getDate() === month &&
           task.date.getFullYear() === year
       )
+      state.doneTasks = allTasks.filter(t => t.done)
+      state.starredTasks = allTasks.filter(t => t.starred)
       state.categories = categories
       state.error = null
     },

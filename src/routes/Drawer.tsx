@@ -8,7 +8,7 @@ import { useReduxSelector } from '../redux/store'
 import Dashboard from '../screens/Application/Dashboard'
 // import Settings from '../screens/Application/Settings'
 import AddTask from '../screens/Application/AddTask'
-// import Starred from '../screens/Application/Starred'
+import Starred from '../screens/Application/Starred'
 // import Done from '../screens/Application/Done'
 // import AllTask from '../screens/Application/AllTask'
 
@@ -49,23 +49,25 @@ export default function Drawer() {
           headerTintColor: colors.secondary,
         }}
       />
-      {/* <Screen
+      <Screen
         name="Starred"
         component={Starred}
         options={{
           drawerLabel: () => (
             <Text testID="starred" style={{ color: colors.secondary }}>
-              {' '}
-              Starred{' '}
+              Starred
             </Text>
           ),
           drawerIcon: () => (
             <Avatar.Icon icon="star-outline" color={colors.secondary} />
           ),
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.profileBackground },
+          headerTintColor: colors.secondary,
         }}
       />
 
-      <Screen
+      {/* <Screen
         name="AllTask"
         component={AllTask}
         options={{
