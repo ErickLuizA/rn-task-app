@@ -6,7 +6,6 @@ type TasksState = {
   allTasks: Task[]
   categories: string[]
   error: string
-  addTaskError: string
 }
 
 type TasksFinishPayload = {
@@ -22,7 +21,6 @@ const initialState: TasksState = {
   allTasks: [],
   categories: [],
   error: null,
-  addTaskError: null,
 }
 
 const tasksSlice = createSlice({
@@ -56,7 +54,6 @@ const tasksSlice = createSlice({
           task.date.getFullYear() === year
       )
       state.categories = categories
-      state.addTaskError = null
       state.error = null
     },
     getTasksError: (state, action: PayloadAction<TasksErrorPayload>) => {
@@ -65,22 +62,49 @@ const tasksSlice = createSlice({
       state.error = error
     },
     addTaskError: (state, action: PayloadAction<TasksErrorPayload>) => {
-      state.addTaskError = action.payload.error
+      state.error = action.payload.error
+    },
+    updateTaskError: (state, action: PayloadAction<TasksErrorPayload>) => {
+      state.error = action.payload.error
+    },
+    deleteTaskError: (state, action: PayloadAction<TasksErrorPayload>) => {
+      state.error = action.payload.error
     },
   },
 })
 
 export const getTasks = createAction('GET_TASKS')
 
-export const addTask = createAction('ADD_TASKS', (task: Task) => ({
+export const addTask = createAction('ADD_TASK', (task: Task) => ({
   payload: {
     task,
   },
 }))
 
+export const updateTask = createAction('UPDATE_TASK', (task: Task) => ({
+  payload: {
+    task,
+  },
+}))
+
+export const deleteTask = createAction('DELETE_TASK', (task: Task) => ({
+  payload: {
+    task,
+  },
+}))
+
+export const deleteTaskFinish = createAction('DELETE_TASK_FINISH')
+
+export const updateTaskFinish = createAction('UPDATE_TASK_FINISH')
+
 export const addTaskFinish = createAction('ADD_TASK_FINISH')
 
-export const { getTasksFinish, getTasksError, addTaskError } =
-  tasksSlice.actions
+export const {
+  getTasksFinish,
+  getTasksError,
+  addTaskError,
+  updateTaskError,
+  deleteTaskError,
+} = tasksSlice.actions
 
 export default tasksSlice.reducer
