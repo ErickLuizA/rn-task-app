@@ -9,8 +9,8 @@ import Dashboard from '../screens/Application/Dashboard'
 // import Settings from '../screens/Application/Settings'
 import AddTask from '../screens/Application/AddTask'
 import Starred from '../screens/Application/Starred'
-// import Done from '../screens/Application/Done'
-// import AllTask from '../screens/Application/AllTask'
+import Done from '../screens/Application/Done'
+import AllTask from '../screens/Application/AllTask'
 
 const { Screen, Navigator } = createDrawerNavigator()
 
@@ -67,21 +67,6 @@ export default function Drawer() {
         }}
       />
 
-      {/* <Screen
-        name="AllTask"
-        component={AllTask}
-        options={{
-          drawerLabel: () => (
-            <Text testID="allTask" style={{ color: colors.secondary }}>
-              {' '}
-              All Tasks{' '}
-            </Text>
-          ),
-          drawerIcon: () => (
-            <Avatar.Icon icon="file-document" color={colors.secondary} />
-          ),
-        }}
-      />
       <Screen
         name="Done"
         component={Done}
@@ -93,10 +78,32 @@ export default function Drawer() {
             </Text>
           ),
           drawerIcon: () => (
-            <Avatar.Icon icon="file-check" color={colors.secondary} />
+            <Avatar.Icon icon="check" color={colors.secondary} />
           ),
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.profileBackground },
+          headerTintColor: colors.secondary,
         }}
-      /> */}
+      />
+
+      <Screen
+        name="AllTask"
+        component={AllTask}
+        options={{
+          drawerLabel: () => (
+            <Text testID="allTask" style={{ color: colors.secondary }}>
+              All Tasks
+            </Text>
+          ),
+          drawerIcon: () => (
+            <Avatar.Icon icon="file-document" color={colors.secondary} />
+          ),
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.profileBackground },
+          headerTintColor: colors.secondary,
+        }}
+      />
+
       <Screen
         name="AddTask"
         component={AddTask}
