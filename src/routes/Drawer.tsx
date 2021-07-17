@@ -91,9 +91,7 @@ export default function Drawer() {
         component={AllTask}
         options={{
           drawerLabel: () => (
-            <Text testID="allTask" style={{ color: colors.secondary }}>
-              All Tasks
-            </Text>
+            <Text style={{ color: colors.secondary }}>All Tasks</Text>
           ),
           drawerIcon: () => (
             <Avatar.Icon icon="file-document" color={colors.secondary} />
@@ -101,6 +99,7 @@ export default function Drawer() {
           headerShown: true,
           headerStyle: { backgroundColor: colors.profileBackground },
           headerTintColor: colors.secondary,
+          title: 'All Tasks',
         }}
       />
 

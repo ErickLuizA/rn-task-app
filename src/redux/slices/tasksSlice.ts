@@ -1,11 +1,17 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Task from '../../models/Task'
 
+type SectionsTask = {
+  category: string
+  data: Task[]
+}
+
 type TasksState = {
   todayTasks: Task[]
   allTasks: Task[]
   doneTasks: Task[]
   starredTasks: Task[]
+  sectionsTask: SectionsTask[]
   categories: string[]
   error: string
 }
@@ -24,6 +30,7 @@ const initialState: TasksState = {
   doneTasks: [],
   starredTasks: [],
   categories: [],
+  sectionsTask: [],
   error: null,
 }
 
@@ -59,6 +66,10 @@ const tasksSlice = createSlice({
       )
       state.doneTasks = allTasks.filter(t => t.done)
       state.starredTasks = allTasks.filter(t => t.starred)
+      state.sectionsTask = categories.map(category => ({
+        category: category,
+        data: allTasks.filter(task => task.category === category),
+      }))
       state.categories = categories
       state.error = null
     },
