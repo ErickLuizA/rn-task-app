@@ -4,10 +4,11 @@ import { useNavigation } from '@react-navigation/native'
 import { useTheme } from 'react-native-paper'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { MaterialIcons } from '@expo/vector-icons'
-
-import styles from './styles'
 import { useReduxDispatch, useReduxSelector } from '../../../redux/store'
 import { toggleTheme } from '../../../redux/slices/themeSlice'
+import { logout } from '../../../redux/slices/authSlice'
+
+import styles from './styles'
 
 export default function Settings() {
   const { colors } = useTheme()
@@ -22,7 +23,9 @@ export default function Settings() {
     dispatch(toggleTheme())
   }
 
-  function handleLogout() {}
+  function handleLogout() {
+    dispatch(logout())
+  }
 
   return (
     <View style={styles.container}>

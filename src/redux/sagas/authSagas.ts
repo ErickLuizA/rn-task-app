@@ -7,6 +7,8 @@ import {
   loginWithEmailStart,
   loginWithGoogle,
   loginWithGoogleFinish,
+  logout,
+  logoutError,
   registerWithEmail,
   registerWithEmailFinish,
   registerWithEmailStart,
@@ -122,6 +124,18 @@ function* signInWithGoogle(action: PayloadAction<{ id_token: string }>) {
   }
 }
 
+function* logoutUser() {
+  try {
+    yield call([auth, auth.signOut])
+  } catch (e) {
+    yield put(
+      logoutError({
+        authError: 'Error while trying to logout',
+      })
+    )
+  }
+}
+
 function* onSignInWithEmailAndPassword() {
   yield takeLatest(loginWithEmail.type, signInWithEmailAndPassword)
 }
@@ -134,10 +148,15 @@ function* onSignInWithGoogle() {
   yield takeLatest(loginWithGoogle.type, signInWithGoogle)
 }
 
+function* onLogout() {
+  yield takeLatest(logout.type, logoutUser)
+}
+
 export default function* authSagas() {
   yield all([
     call(onSignInWithEmailAndPassword),
     call(onSignInWithGoogle),
     call(onSignUpWithEmailAndPassword),
+    call(onLogout),
   ])
 }

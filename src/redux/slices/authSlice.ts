@@ -6,11 +6,16 @@ type AuthState = {
   loginError: string
   registerError: string
   googleError: string
+  logoutError: string
   user: Firebase.User
 }
 
 type LoginFinishPayload = {
   user: Firebase.User
+  authError: string
+}
+
+type LogoutFinishError = {
   authError: string
 }
 
@@ -23,6 +28,7 @@ const initialState: AuthState = {
   loginError: null,
   registerError: null,
   googleError: null,
+  logoutError: null,
   user: null,
 }
 
@@ -69,6 +75,9 @@ const authSlice = createSlice({
     isNotLogged: state => {
       state.user = null
     },
+    logoutError: (state, action: PayloadAction<LogoutFinishError>) => {
+      state.logoutError = action.payload.authError
+    },
   },
 })
 
@@ -102,6 +111,8 @@ export const loginWithGoogle = createAction(
   })
 )
 
+export const logout = createAction('LOGOUT')
+
 export const {
   loginWithEmailFinish,
   loginWithEmailStart,
@@ -111,6 +122,7 @@ export const {
   dismissGoogleError,
   isLogged,
   isNotLogged,
+  logoutError,
 } = authSlice.actions
 
 export default authSlice.reducer
