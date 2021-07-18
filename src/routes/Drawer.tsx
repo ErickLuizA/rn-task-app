@@ -6,11 +6,11 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { useReduxSelector } from '../redux/store'
 
 import Dashboard from '../screens/Application/Dashboard'
-// import Settings from '../screens/Application/Settings'
 import AddTask from '../screens/Application/AddTask'
 import Starred from '../screens/Application/Starred'
 import Done from '../screens/Application/Done'
 import AllTask from '../screens/Application/AllTask'
+import Settings from '../screens/Application/Settings'
 
 const { Screen, Navigator } = createDrawerNavigator()
 
@@ -33,10 +33,7 @@ export default function Drawer() {
         component={Dashboard}
         options={{
           drawerLabel: () => (
-            <Text testID="dashboard" style={{ color: colors.secondary }}>
-              {' '}
-              Dashboard{' '}
-            </Text>
+            <Text style={{ color: colors.secondary }}> Dashboard </Text>
           ),
           drawerIcon: () =>
             user?.providerData[0]?.photoURL ? (
@@ -49,14 +46,13 @@ export default function Drawer() {
           headerTintColor: colors.secondary,
         }}
       />
+
       <Screen
         name="Starred"
         component={Starred}
         options={{
           drawerLabel: () => (
-            <Text testID="starred" style={{ color: colors.secondary }}>
-              Starred
-            </Text>
+            <Text style={{ color: colors.secondary }}>Starred</Text>
           ),
           drawerIcon: () => (
             <Avatar.Icon icon="star-outline" color={colors.secondary} />
@@ -72,10 +68,7 @@ export default function Drawer() {
         component={Done}
         options={{
           drawerLabel: () => (
-            <Text testID="done" style={{ color: colors.secondary }}>
-              {' '}
-              Done{' '}
-            </Text>
+            <Text style={{ color: colors.secondary }}> Done </Text>
           ),
           drawerIcon: () => (
             <Avatar.Icon icon="check" color={colors.secondary} />
@@ -108,9 +101,7 @@ export default function Drawer() {
         component={AddTask}
         options={{
           drawerLabel: () => (
-            <Text testID="addTask" style={{ color: colors.secondary }}>
-              Add Task
-            </Text>
+            <Text style={{ color: colors.secondary }}>Add Task</Text>
           ),
           drawerIcon: () => (
             <Avatar.Icon icon="plus" color={colors.secondary} />
@@ -121,21 +112,22 @@ export default function Drawer() {
           headerTitle: 'Add Task',
         }}
       />
-      {/* <Screen
+
+      <Screen
         name="Settings"
         component={Settings}
         options={{
           drawerLabel: () => (
-            <Text testID="settings" style={{ color: colors.secondary }}>
-              {' '}
-              Settings{' '}
-            </Text>
+            <Text style={{ color: colors.secondary }}> Settings </Text>
           ),
           drawerIcon: () => (
-            <Avatar.Icon icon="saw-blade" color={colors.secondary} />
+            <Avatar.Icon icon="cog-outline" color={colors.secondary} />
           ),
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.profileBackground },
+          headerTintColor: colors.secondary,
         }}
-      /> */}
+      />
     </Navigator>
   )
 }

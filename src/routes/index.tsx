@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react'
+import { StatusBar } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { auth } from '../firebase/config'
 import { isLogged, isNotLogged } from '../redux/slices/authSlice'
 import { getTasks } from '../redux/slices/tasksSlice'
@@ -9,6 +11,8 @@ import AuthRoutes from './Auth.routes'
 
 export default function Screens() {
   const { user } = useReduxSelector(state => state.auth)
+
+  const { colors } = useTheme()
 
   const dispatch = useReduxDispatch()
 
@@ -24,5 +28,15 @@ export default function Screens() {
     })
   }, [])
 
-  return user ? <AppRoutes /> : <AuthRoutes />
+  return user ? (
+    <>
+      <StatusBar backgroundColor={colors.drawerBackground} />
+      <AppRoutes />
+    </>
+  ) : (
+    <>
+      <StatusBar backgroundColor={colors.drawerBackground} />
+      <AuthRoutes />
+    </>
+  )
 }
