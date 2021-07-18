@@ -1,41 +1,37 @@
-import { DrawerNavigationProp } from '@react-navigation/drawer'
-import { ParamListBase, useNavigation } from '@react-navigation/native'
+import React, { useState } from 'react'
+import { Alert, Text, View } from 'react-native'
 import { Snackbar, useTheme } from 'react-native-paper'
-import React, { useContext, useState } from 'react'
-import { Alert, Dimensions, StyleSheet, Text, View } from 'react-native'
-import Container from '../../../components/Container'
-import UpperProfile from '../../../components/UpperProfile'
-import { AuthContext } from '../../../context/AuthContext'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import Button from '../../../components/Button'
+import { useNavigation } from '@react-navigation/native'
+
+import { useReduxSelector } from '../../../redux/store'
 import { auth } from '../../../firebase/config'
 
-const { height, width } = Dimensions.get('screen')
+import UpperProfile from './components/UpperProfile'
+import Button from '../../../components/Button'
+
+import styles from './styles'
 
 export default function Account() {
-  const { goBack, navigate } =
-    useNavigation<DrawerNavigationProp<ParamListBase>>()
   const { colors } = useTheme()
-  const { user, load } = useContext(AuthContext)
+  const { navigate } = useNavigation()
+  const { user } = useReduxSelector(state => state.auth)
+
   const [snack, setSnack] = useState(false)
-
-  const open = () => {
-    goBack()
-  }
-
-  const openPhoto = () => {
-    navigate('PhotoModal')
-  }
+  const [failureSendEmail, setFailureSendEmail] = useState(false)
+  const [failureDelete, setFailureDelete] = useState(false)
 
   const handleDelete = () => {
     Alert.alert('Are you sure?', 'This will delete your account', [
       {
         text: 'Ok',
-        onPress: () =>
-          user
-            ?.delete()
-            .then(() => load())
-            .then(() => true),
+        onPress: async () => {
+          try {
+            auth.currentUser.delete()
+          } catch (error) {
+            setFailureDelete(true)
+          }
+        },
       },
       { text: 'Cancel', onPress: () => true },
     ])
@@ -43,74 +39,56 @@ export default function Account() {
 
   const handleSubmit = async () => {
     try {
-      if (user?.email) {
-        await auth.sendPasswordResetEmail(user.email)
-      }
+      await auth.sendPasswordResetEmail(user.email)
+
       setSnack(true)
     } catch (e) {
-      Alert.alert(e.message)
+      setFailureSendEmail(true)
     }
   }
 
   return (
-    <>
-      <UpperProfile openPhoto={openPhoto} account openDrawer={open} />
-      <Container>
+    <View style={{ flex: 1 }}>
+      <UpperProfile openPhoto={() => navigate('PhotoModal')} />
+      <View style={styles.container}>
         <View style={styles.group}>
           <Text style={[styles.label, { color: colors.secondary }]}>Name</Text>
+
           <Text style={[styles.text, { color: colors.text }]}>
-            {user?.displayName}{' '}
+            {user.displayName}{' '}
           </Text>
         </View>
+
         <View style={styles.group}>
           <Text style={[styles.label, { color: colors.secondary }]}>
             E-mail
           </Text>
           <Text style={[styles.text, { color: colors.text }]}>
-            {user?.email}{' '}
+            {user.email}{' '}
           </Text>
         </View>
+
         <Button onPress={handleSubmit} big text="RESET PASSWORD" />
+
         <TouchableOpacity style={styles.button} onPress={handleDelete}>
           <Text style={styles.buttonText}>Delete Account</Text>
         </TouchableOpacity>
+      </View>
+      <Snackbar visible={snack} onDismiss={() => setSnack(false)}>
+        Go check your e-mail
+      </Snackbar>
 
-        <Snackbar visible={snack} onDismiss={() => setSnack(false)}>
-          Go check your e-mail
-        </Snackbar>
-      </Container>
-    </>
+      <Snackbar
+        visible={failureSendEmail}
+        onDismiss={() => setFailureSendEmail(false)}>
+        Error while trying to send e-mail reset
+      </Snackbar>
+
+      <Snackbar
+        visible={failureDelete}
+        onDismiss={() => setFailureDelete(false)}>
+        Error while trying to delete account
+      </Snackbar>
+    </View>
   )
 }
-
-const styles = StyleSheet.create({
-  group: {
-    alignSelf: 'flex-start',
-    top: -height / 8,
-    marginVertical: 20,
-  },
-
-  label: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Medium',
-  },
-
-  text: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Light',
-  },
-
-  button: {
-    width: width / 1.25,
-  },
-
-  buttonText: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Light',
-    textAlign: 'center',
-    backgroundColor: '#b00',
-    paddingVertical: 20,
-    borderRadius: 8,
-    color: '#fff',
-  },
-})
