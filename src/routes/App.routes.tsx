@@ -5,7 +5,6 @@ import { useTheme } from 'react-native-paper'
 import Drawer from './Drawer'
 import TaskDetail from '../screens/Application/TaskDetail'
 import Account from '../screens/Application/Account'
-// import PhotoModal from '../screens/Application/PhotoModal'
 
 const { Screen, Navigator } = createStackNavigator()
 
@@ -56,11 +55,6 @@ export default function AppRoutes() {
           headerTintColor: colors.secondary,
         }}
       />
-      {/* <Screen
-        name="PhotoModal"
-        component={PhotoModal}
-        options={{ headerShown: false }}
-      /> */}
     </Navigator>
   )
 }

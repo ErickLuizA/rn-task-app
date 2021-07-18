@@ -1,13 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Avatar, useTheme } from 'react-native-paper'
+
 import { useReduxSelector } from '../../../../redux/store'
 
-interface IUpperProfileProps {
-  openPhoto: () => void
-}
-
-export default function UpperProfile({ openPhoto }: IUpperProfileProps) {
+export default function UpperProfile() {
   const { user } = useReduxSelector(state => state.auth)
 
   const { colors } = useTheme()
@@ -19,18 +16,16 @@ export default function UpperProfile({ openPhoto }: IUpperProfileProps) {
   return (
     <View
       style={[styles.container, { backgroundColor: colors.profileBackground }]}>
-      <TouchableOpacity onPress={openPhoto}>
-        {validUserPhoto ? (
-          <Avatar.Image
-            source={{
-              uri: userPhoto,
-            }}
-            size={80}
-          />
-        ) : (
-          <Avatar.Icon icon="account" size={80} />
-        )}
-      </TouchableOpacity>
+      {validUserPhoto ? (
+        <Avatar.Image
+          source={{
+            uri: userPhoto,
+          }}
+          size={80}
+        />
+      ) : (
+        <Avatar.Icon icon="account" size={80} />
+      )}
 
       <Text style={[styles.text, { color: colors.text }]}>
         Hello,{' '}

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Alert, Text, View } from 'react-native'
 import { Snackbar, useTheme } from 'react-native-paper'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useNavigation } from '@react-navigation/native'
 
 import { useReduxSelector } from '../../../redux/store'
 import { auth } from '../../../firebase/config'
@@ -14,7 +13,6 @@ import styles from './styles'
 
 export default function Account() {
   const { colors } = useTheme()
-  const { navigate } = useNavigation()
   const { user } = useReduxSelector(state => state.auth)
 
   const [snack, setSnack] = useState(false)
@@ -49,7 +47,7 @@ export default function Account() {
 
   return (
     <View style={{ flex: 1 }}>
-      <UpperProfile openPhoto={() => navigate('PhotoModal')} />
+      <UpperProfile />
       <View style={styles.container}>
         <View style={styles.group}>
           <Text style={[styles.label, { color: colors.secondary }]}>Name</Text>
