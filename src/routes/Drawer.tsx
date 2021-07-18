@@ -19,6 +19,10 @@ export default function Drawer() {
 
   const { colors } = useTheme()
 
+  const userPhoto = user.providerData[0].photoURL ?? user.photoURL
+
+  const validUserPhoto = userPhoto.includes('content://') ? false : true
+
   return (
     <Navigator
       initialRouteName="Dashboard"
@@ -36,8 +40,12 @@ export default function Drawer() {
             <Text style={{ color: colors.secondary }}> Dashboard </Text>
           ),
           drawerIcon: () =>
-            user?.providerData[0]?.photoURL ? (
-              <Avatar.Image source={{ uri: user?.providerData[0].photoURL }} />
+            validUserPhoto ? (
+              <Avatar.Image
+                source={{
+                  uri: userPhoto,
+                }}
+              />
             ) : (
               <Avatar.Icon icon="account" />
             ),
