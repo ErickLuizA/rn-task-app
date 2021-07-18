@@ -2,6 +2,8 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { all, call } from 'redux-saga/effects'
 import createSagaMiddleware from 'redux-saga'
+import { persistReducer, persistStore } from 'redux-persist'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import authSagas from './sagas/authSagas'
 
@@ -22,10 +24,20 @@ function* rootSaga() {
 
 const sagaMiddleware = createSagaMiddleware()
 
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  whiteList: ['theme'],
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: [sagaMiddleware],
 })
+
+const persistor = persistStore(store)
 
 sagaMiddleware.run(rootSaga)
 
@@ -37,4 +49,4 @@ export const useReduxDispatch = (): AppDispatch => useDispatch<AppDispatch>()
 
 export const useReduxSelector: TypedUseSelectorHook<RootState> = useSelector
 
-export default store
+export { store, persistor }

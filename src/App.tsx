@@ -4,9 +4,12 @@ import { LogBox } from 'react-native'
 import AppLoading from 'expo-app-loading'
 import { useFonts } from 'expo-font'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
-import store from './redux/store'
+import { store, persistor } from './redux/store'
+
 import ThemeProvider from './theme/provider'
+
 import Screens from './routes/index'
 
 export default function App() {
@@ -33,9 +36,11 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <ThemeProvider>
-        <Screens />
-      </ThemeProvider>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider>
+          <Screens />
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   )
 }
