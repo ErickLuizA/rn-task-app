@@ -24,6 +24,7 @@
   <a href="#building_construction-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#rocket-getting-started">Getting Started</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#memo-license">License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#framed_picture-screenshots">Screenshots</a>
 </p>
 
 
@@ -38,7 +39,16 @@ whtodo is a task noting app built with React Native and Firebase
 - [Typescript](https://www.typescriptlang.org/)
 
 - [React Native](https://reactnative.dev/)
-  - [react-native-firebase](https://rnfirebase.io/)
+  - [Expo](https://expo.io)
+  - [Redux](https://redux.js.org/)
+  - [Redux-Saga](https://redux-saga.js.org/)
+  - [Redux-Persist](https://github.com/rt2zz/redux-persist)
+  - [React-Native-Circular-Progress](https://github.com/bartgryszko/react-native-circular-progress#usage)
+  - [Async-Storage](https://react-native-async-storage.github.io/async-storage/docs/install/)
+  - [React-Native-Paper](https://callstack.github.io/react-native-paper/getting-started.html)
+  - [React-Nativigation](https://reactnavigation.org/docs/getting-started/)
+
+
 
 ## :rocket: Getting Started
 
@@ -59,32 +69,44 @@ whtodo is a task noting app built with React Native and Firebase
 $ cd whtodo
 
 # Install dependencies
-$ yarn install
-
-# Signin to firebase using your google account and configure your project -> https://console.firebase.google.com/
-
-# Put your google.services.json file in the android/app folder or/and the respective if you are building for IOS
-
-# Put your web client id in a .env file
+$ npm install
 ```
 
 ## 3. Execution
 
 ```shell
-$ yarn android or yarn ios
-
-# Be aware that this project was configured only for android, check rnfirebase.io if any problem with firebase config
-
-# Firestore data structure -> Users Collection -> Doc with user id as id -> Tasks Collection -> task docs 
-
-$ yarn start
+$ expo start
 ```
+
+## 4. Firestore data structure 
+
+```shell
+Users Collection -
+Doc with user id as id -
+Tasks Collection -
+Task docs 
+```
+
+
+## :framed_picture: Screenshots
+
+<div>
+  <img alt="whtodo screen" src=".github/Onboarding.png"  width="200"/>
+	<img alt="whtodo screen" src=".github/Login.png"  width="200"/>
+  <img alt="whtodo screen" src=".github/Register.png"  width="200"/>
+  <img alt="whtodo screen" src=".github/Forgot.png"  width="200"/>
+  <img alt="whtodo screen" src=".github/Dashboard.png"  width="200"/>
+  <img alt="whtodo screen" src=".github/DashboardDaily.png"  width="200"/>
+  <img alt="whtodo screen" src=".github/AddTask.png"  width="200"/>
+  <img alt="whtodo screen" src=".github/Drawer.png"  width="200"/>
+  <img alt="whtodo screen" src=".github/AllTasks.png"  width="200"/>
+  <img alt="whtodo screen" src=".github/Settings.png"  width="200"/>
+	<img alt="whtodo screen" src=".github/Account.png"  width="200"/>  
+</div>
 
 ## :information_source: TODO
   - Add notifications
-  - Add customizable task editor
   - Implement tests
-  - Implement offline mode
 
 ## :memo: License
 
