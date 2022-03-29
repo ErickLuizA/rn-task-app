@@ -1,7 +1,7 @@
-<h1 align="center"> whtodo </h1>
+<h1 align="center"> rn-task-app </h1>
 
 <p align="center">
-  <a href="https://github.com/ErickLuizA/whtodo/graphs/commit-activity" alt="Maintenance">
+  <a href="https://github.com/ErickLuizA/rn-task-app/graphs/commit-activity" alt="Maintenance">
     <img src="https://img.shields.io/badge/Maintained%3F-yes-1EAE72.svg" />
   </a>
 
@@ -11,12 +11,12 @@
 
 <br/>
 
-<img alt="GitHub language count" src="https://img.shields.io/github/languages/count/ErickLuizA/whtodo?color=blue">
+<img alt="GitHub language count" src="https://img.shields.io/github/languages/count/ErickLuizA/rn-task-app?color=blue">
 
-<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ErickLuizA/whtodo">
+<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ErickLuizA/rn-task-app">
 
-<a href="https://github.com/ErickLuizA/whtodo/stargazers">
-  <img alt="GitHub stars" src="https://img.shields.io/github/stars/ErickLuizA/whtodo?style=social">
+<a href="https://github.com/ErickLuizA/rn-task-app/stargazers">
+  <img alt="GitHub stars" src="https://img.shields.io/github/stars/ErickLuizA/rn-task-app?style=social">
 </a>
 
 <p align="center">
@@ -30,7 +30,7 @@
 
 ## :clipboard: Description
 
-whtodo is a task noting app built with React Native and Firebase
+rn-task-app is a task noting app built with React Native and Firebase
 
 ## :building_construction: Technologies
 
@@ -55,18 +55,18 @@ whtodo is a task noting app built with React Native and Firebase
 ## 1. Download the repository
 
 ```shell
- $ git clone https://github.com/ErickLuizA/whtodo.git
+ $ git clone https://github.com/ErickLuizA/rn-task-app.git
  
  or
 
- $ gh repo clone ErickLuizA/whtodo
+ $ gh repo clone ErickLuizA/rn-task-app
 ```
 
 ## 2. Installation
 
 ```shell
 # Go into the repository
-$ cd whtodo
+$ cd rn-task-app
 
 # Install dependencies
 $ npm install
@@ -91,17 +91,17 @@ Task docs
 ## :framed_picture: Screenshots
 
 <div>
-  <img alt="whtodo screen" src=".github/Onboarding.png"  width="200"/>
-	<img alt="whtodo screen" src=".github/Login.png"  width="200"/>
-  <img alt="whtodo screen" src=".github/Register.png"  width="200"/>
-  <img alt="whtodo screen" src=".github/Forgot.png"  width="200"/>
-  <img alt="whtodo screen" src=".github/Dashboard.png"  width="200"/>
-  <img alt="whtodo screen" src=".github/DashboardDaily.png"  width="200"/>
-  <img alt="whtodo screen" src=".github/AddTask.png"  width="200"/>
-  <img alt="whtodo screen" src=".github/Drawer.png"  width="200"/>
-  <img alt="whtodo screen" src=".github/AllTasks.png"  width="200"/>
-  <img alt="whtodo screen" src=".github/Settings.png"  width="200"/>
-	<img alt="whtodo screen" src=".github/Account.png"  width="200"/>  
+  <img alt="rn-task-app screen" src=".github/Onboarding.png"  width="200"/>
+	<img alt="rn-task-app screen" src=".github/Login.png"  width="200"/>
+  <img alt="rn-task-app screen" src=".github/Register.png"  width="200"/>
+  <img alt="rn-task-app screen" src=".github/Forgot.png"  width="200"/>
+  <img alt="rn-task-app screen" src=".github/Dashboard.png"  width="200"/>
+  <img alt="rn-task-app screen" src=".github/DashboardDaily.png"  width="200"/>
+  <img alt="rn-task-app screen" src=".github/AddTask.png"  width="200"/>
+  <img alt="rn-task-app screen" src=".github/Drawer.png"  width="200"/>
+  <img alt="rn-task-app screen" src=".github/AllTasks.png"  width="200"/>
+  <img alt="rn-task-app screen" src=".github/Settings.png"  width="200"/>
+	<img alt="rn-task-app screen" src=".github/Account.png"  width="200"/>  
 </div>
 
 ## :information_source: TODO
